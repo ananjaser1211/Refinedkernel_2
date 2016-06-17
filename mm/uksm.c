@@ -104,7 +104,7 @@ int memcmpx86_32(void *s1, void *s2, size_t n)
 /*
  * Check the page is all zero ?
  */
-static int is_full_zero(void *s1, size_t len)
+static int is_full_zero(const void *s1, size_t len)
 {
 	unsigned char same;
 
@@ -146,7 +146,7 @@ int memcmpx86_64(void *s1, void *s2, size_t n)
 	return res;
 }
 
-static int is_full_zero(const void *s1, size_t len)
+static int is_full_zero(void *s1, size_t len)
 {
 	unsigned char same;
 
@@ -164,7 +164,7 @@ static int is_full_zero(const void *s1, size_t len)
 
 #endif
 #else
-static int is_full_zero(const void *s1, size_t len)
+static int is_full_zero(void *s1, size_t len)
 {
 	unsigned long *src = s1;
 	int i;
