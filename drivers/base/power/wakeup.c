@@ -15,6 +15,7 @@
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
 #include <linux/types.h>
+#include <linux/moduleparam.h>
 #ifdef CONFIG_SEC_PM_DEBUG
 #include <linux/fb.h>
 #endif
