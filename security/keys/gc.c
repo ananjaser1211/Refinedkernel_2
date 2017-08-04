@@ -164,7 +164,6 @@ static noinline void key_gc_unused_keys(struct list_head *keys)
 		kmem_cache_free(key_jar, key);
 	}
 }
-
 /*
  * Garbage collector for unused keys.
  *
