@@ -62,6 +62,7 @@ static unsigned long mmap_rnd(void)
 	return rnd << PAGE_SHIFT;
 }
 
+
 static unsigned long mmap_base(void)
 {
 	unsigned long gap = rlimit(RLIMIT_STACK);
