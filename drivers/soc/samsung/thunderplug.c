@@ -195,6 +195,10 @@ static ssize_t __ref thunderplug_max_core_online_store(struct kobject *kobj,
 		case 2:
 		case 3:
 		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
 			if (thunder_param.tplug_hp_enabled &&
 					thunder_param.max_core_online != val) {
 				thunder_param.max_core_online = val;
@@ -229,6 +233,10 @@ static ssize_t __ref thunderplug_min_core_online_store(struct kobject *kobj,
 		case 2:
 		case 3:
 		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
 			if (thunder_param.tplug_hp_enabled &&
 					thunder_param.min_core_online != val) {
 				thunder_param.min_core_online = val;
