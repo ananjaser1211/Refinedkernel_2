@@ -28,6 +28,7 @@ scripts/selinux/mdp/mdp
 scripts/sortextable
 lazy.sh
 .config
+*.patch
 .version
 Module.symvers
 arch/arm64/include/generated/

@@ -971,12 +971,26 @@ static void tcp_v6_timewait_ack(struct sock *sk, struct sk_buff *skb)
 {
 	struct inet_timewait_sock *tw = inet_twsk(sk);
 	struct tcp_timewait_sock *tcptw = tcp_twsk(sk);
+#ifdef CONFIG_MPTCP
+	u32 data_ack = 0;
+	int mptcp = 0;
 
+	if (tcptw->mptcp_tw && tcptw->mptcp_tw->meta_tw) {
+		data_ack = (u32)tcptw->mptcp_tw->rcv_nxt;
+		mptcp = 1;
+	}
+	tcp_v6_send_ack(sk, skb, tcptw->tw_snd_nxt, tcptw->tw_rcv_nxt,
+			data_ack, tcptw->tw_rcv_wnd >> tw->tw_rcv_wscale,
+			tcp_time_stamp + tcptw->tw_ts_offset,
+			tcptw->tw_ts_recent, tw->tw_bound_dev_if, tcp_twsk_md5_key(tcptw),
+			tw->tw_tclass, (tw->tw_flowlabel << 12), mptcp);
+#else
 	tcp_v6_send_ack(sk, skb, tcptw->tw_snd_nxt, tcptw->tw_rcv_nxt,
 			tcptw->tw_rcv_wnd >> tw->tw_rcv_wscale,
 			tcp_time_stamp + tcptw->tw_ts_offset,
 			tcptw->tw_ts_recent, tw->tw_bound_dev_if, tcp_twsk_md5_key(tcptw),
-			tw->tw_tclass, (tw->tw_flowlabel << 12));
+			tw->tw_tclass, cpu_to_be32(tw->tw_flowlabel));
+#endif
 
 	inet_twsk_put(tw);
 }
