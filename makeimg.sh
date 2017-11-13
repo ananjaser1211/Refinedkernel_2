@@ -1,26 +1,30 @@
 #!/bin/bash
-DIR=/home/elite/android/RefinedKernel_2/rf-tools
-DIRK=/home/elite/android/RefinedKernel_2
+$DIR=/home/elite/android/RefinedKernel_2/rf-tools
+$DIRK=/home/elite/android/RefinedKernel_2
 #Cleanup before build
 
 echo "Remove Any files"
-
-cd DIR/AIK-Linux
+boot.img-dtb
+cd /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux
 
 sudo ./cleanup.sh
 
 echo "Copy Ramdisk"
 
-sudo cp -a DIR/ramdisk/. DIR/AIK-Linux/ramdisk
+sudo cp -a /home/elite/android/RefinedKernel_2/rf-tools/ramdisk/. /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux/ramdisk
 
 
 echo "copy split-img"
 
-sudo cp -a DIR/split_img/. DIR/AIK-Linux/split_img
+sudo cp -a /home/elite/android/RefinedKernel_2/rf-tools/split_img/. /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux/split_img
 
 echo "copy compiled zimage"
 
-sudo cp DIRK/arch/arm64/boot/Image DIR/AIK-Linux/split_img/boot.img-zImage
+sudo cp /home/elite/android/RefinedKernel_2/arch/arm64/boot/Image /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
+
+# echo "copy compiled dtb"
+
+# sudo cp /home/elite/android/RefinedKernel_2/dtb.img /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux/split_img/boot.img-dtb
 
 echo "packing image"
 
@@ -28,11 +32,11 @@ sudo ./repackimg.sh
 
 echo "Copy boot.img"
 
-sudo cp DIR/AIK-Linux/image-new.img DIR/out/boot.img
+sudo cp /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux/image-new.img /home/elite/android/RefinedKernel_2/rf-tools/out/boot.img
 
 echo "Cleanup after packing"
 
-cd DIR/AIK-Linux
+cd /home/elite/android/RefinedKernel_2/rf-tools/AIK-Linux
 
 sudo ./cleanup.sh
 
