@@ -30,13 +30,7 @@ static void remove_flag(char *cmd, const char *flag)
 
 	/* Ensure all instances of a flag are removed */
 	while ((start_addr = strstr(cmd, flag))) {
-		end_addr = strchr(start_addr, ' ');1.  proc: Remove verifiedbootstate flag from /proc/cmdline
-2.  proc: Remove additional SafetyNet flags from /proc/cmdline
-
-SafetyNet checks androidboot.veritymode in Nougat, so remove it.
-
-Additionally, remove androidboot.enable_dm_verity and androidboot.secboot
-in case SafetyNet will check them in the future.
+		end_addr = strchr(start_addr, ' ');
 		if (end_addr)
 			memmove(start_addr, end_addr + 1, strlen(end_addr));
 		else
@@ -51,19 +45,19 @@ static void remove_safetynet_flags(char *cmd)
 	remove_flag(cmd, "androidboot.verifiedbootstate=");
 	remove_flag(cmd, "androidboot.veritymode=");
 	remove_flag(cmd, "androidboot.boot.warranty_bit=");
- 	remove_flag(cmd, "androidboot.warranty_bit=");
- 	remove_flag(cmd, "androidboot.fmp_config=");
+	remove_flag(cmd, "androidboot.warranty_bit=");
+	remove_flag(cmd, "androidboot.fmp_config=");
 }
-
 
 static int __init proc_cmdline_init(void)
 {
-	strcpy(new_command_line, saved_command_line);	
+	strcpy(new_command_line, saved_command_line);
+
 	/*
 	 * Remove various flags from command line seen by userspace in order to
 	 * pass SafetyNet CTS check.
 	 */
-	remove_safetynet_flags(new_command_line);		
+	remove_safetynet_flags(new_command_line);
 	proc_create("cmdline", 0, NULL, &cmdline_proc_fops);
 	return 0;
 }
