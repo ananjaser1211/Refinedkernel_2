@@ -519,7 +519,15 @@ on post-fs-data
     chmod 0771 /data
     # We restorecon /data in case the userdata partition has been reset.
     restorecon /data
-
+	
+	# PrivateMode Mountpoints
+    mkdir /mnt/shell/ 0750 shell shell
+    mkdir /mnt/shell/privatemode 0700 system system
+    mkdir /storage/Private 0000 system system
+    mkdir /data/privatemode 0770 system system
+    chown system system /data/privatemode
+    restorecon /data/privatemode
+	
     # h2k
     mkdir /efs/cpk 0771 radio system
     chmod 0644 /efs/redata.bin
