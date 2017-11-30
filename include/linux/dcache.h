@@ -474,14 +474,12 @@ static inline unsigned long vfs_pressure_ratio(unsigned long val)
 	return mult_frac(val, sysctl_vfs_cache_pressure, 100);
 }
 
-<<<<<<< HEAD
 struct name_snapshot {
 	const char *name;
 	char inline_name[DNAME_INLINE_LEN];
 };
 void take_dentry_name_snapshot(struct name_snapshot *, struct dentry *);
 void release_dentry_name_snapshot(struct name_snapshot *);
-=======
 /**
  * d_inode - Get the actual inode of this dentry
  * @dentry: The dentry to query
@@ -537,6 +535,5 @@ static inline struct dentry *d_backing_dentry(struct dentry *upper)
 {
 	return upper;
 }
->>>>>>> c13f54e... LINUX: 3.18.23 Kernel Update
 
 #endif	/* __LINUX_DCACHE_H */
