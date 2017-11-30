@@ -36,7 +36,7 @@ devicestoragemonitor                      u:object_r:devicestoragemonitor_servic
 diskstats                                 u:object_r:diskstats_service:s0
 display.qservice                          u:object_r:surfaceflinger_service:s0
 display                                   u:object_r:display_service:s0
-netd_listener                             u:object_r:netd_listener_service:s0
+dns_listener                              u:object_r:dns_listener_service:s0
 DockObserver                              u:object_r:DockObserver_service:s0
 dreams                                    u:object_r:dreams_service:s0
 drm.drmManager                            u:object_r:drmserver_service:s0
@@ -147,7 +147,7 @@ wifiscanner                               u:object_r:wifiscanner_service:s0
 wifi                                      u:object_r:wifi_service:s0
 window                                    u:object_r:window_service:s0
 *                                         u:object_r:default_android_service:s0
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/samsung/system/sepolicy/BSP/qcom_bsp/common/service_contexts"
 # Copyright (c) 2015-2016 Dolby Laboratories, Inc. All rights reserved.
@@ -217,7 +217,7 @@ sms-sec                                        u:object_r:radio_service:s0
 regionalization                                       u:object_r:regionalization_service:s0
 audio.vrservice                                       u:object_r:audioserver_service:s0
 
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/samsung/system/sepolicy/BSP/qcom_bsp/msm8996/service_contexts"
 # Copyright (c) 2015, The Linux Foundation. All rights reserved.
@@ -248,7 +248,7 @@ audio.vrservice                                       u:object_r:audioserver_ser
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 android.apps.IQvopService             u:object_r:iqvop_service:s0
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/samsung/system/sepolicy/BSP/marvell_bsp/service_contexts"
 # for the binder services
@@ -261,7 +261,7 @@ FMRadioService		u:object_r:FMRadiod_service:s0
 #SEC changed: codecIPCservice		u:object_r:system_service:s0
 codecIPCservice		u:object_r:codecIPC_server_service:s0
 
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/samsung/system/sepolicy/BSP/sprd_bsp/service_contexts"
 atchannel                                 u:object_r:radio_service:s0
@@ -270,7 +270,7 @@ sprdsimphonebook                          u:object_r:radio_service:s0
 sprd_phone                                u:object_r:radio_service:s0
 security                                  u:object_r:system_service:s0
 board_score                               u:object_r:system_service:s0
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/samsung/system/sepolicy/service_contexts"
 auditlog                                    u:object_r:auditlog_service:s0
@@ -578,11 +578,5 @@ directpeninputmanagerservicerestricted[0-9] u:object_r:directpeninputmanager_ser
 directpeninputmanagerservicerestricted10    u:object_r:directpeninputmanager_service:s0
 WlanDutService                              u:object_r:wlandutservice_service:s0
 SCPMHelper                                  u:object_r:scpmhelper_service:s0
-IfaaService                                 u:object_r:IfaaService_service:s0
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
-
-#line 1 "vendor/samsung/system/sepolicy/mr1/sec_common/service_contexts"
-dns_listener                          u:object_r:dns_listener_service:s0
-
-#line 1 "out/target/product/gtactive2lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
