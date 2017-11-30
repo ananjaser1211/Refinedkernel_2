@@ -23,6 +23,9 @@
 
 #include "power.h"
 
+static bool enable_ipa_ws = false;
+module_param(enable_ipa_ws, bool, 0644);
+
 /*
  * If set, the suspend/hibernate code will abort transitions to a sleep state
  * if wakeup events are registered during or immediately before the transition.
@@ -395,6 +398,13 @@ EXPORT_SYMBOL_GPL(device_set_wakeup_enable);
 static void wakeup_source_activate(struct wakeup_source *ws)
 {
 	unsigned int cec;
+	
+	if (!enable_ipa_ws && !strncmp(ws->name, "IPA_WS", 6)) {
+ 		if (ws->active)
+ 			wakeup_source_deactivate(ws);
+ 
+ 		return;
+ 	}
 
 	/*
 	 * active wakeup source should bring the system
@@ -481,77 +491,71 @@ void pm_stay_awake(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(pm_stay_awake);
 
-#ifdef CONFIG_PM_AUTOSLEEP
++#ifdef CONFIG_PM_AUTOSLEEP
 static void update_prevent_sleep_time(struct wakeup_source *ws, ktime_t now)
-{
-	ktime_t delta = ktime_sub(now, ws->start_prevent_time);
-	ws->prevent_sleep_time = ktime_add(ws->prevent_sleep_time, delta);
-}
+ {
+ 	ktime_t delta = ktime_sub(now, ws->start_prevent_time);
+ 	ws->prevent_sleep_time = ktime_add(ws->prevent_sleep_time, delta);
+ }
 #else
 static inline void update_prevent_sleep_time(struct wakeup_source *ws,
 					     ktime_t now) {}
 #endif
 
-#ifdef CONFIG_SEC_PM_DEBUG
-static void update_time_while_screen_off(struct wakeup_source *ws, ktime_t now)
+/**
+ * wakup_source_deactivate - Mark given wakeup source as inactive.
+ * @ws: Wakeup source to handle.
+ *
+ * Update the @ws' statistics and notify the PM core that the wakeup source has
+ * become inactive by decrementing the counter of wakeup events being processed
+ * and incrementing the counter of registered wakeup events.
+ */
+static void wakeup_source_deactivate(struct wakeup_source *ws)
 {
-	ktime_t delta = ktime_sub(now, ws->start_screen_off);
-	ws->time_while_screen_off = ktime_add(ws->time_while_screen_off, delta);
-}
-
-static int fb_state_change(struct notifier_block *nb, unsigned long val,
-			   void *data)
-{
-	struct fb_event *evdata = data;
-	struct fb_info *info = evdata->info;
-	unsigned int blank;
-	struct wakeup_source *ws;
+	unsigned int cnt, inpr, cec;
+	ktime_t duration;
 	ktime_t now;
-	bool is_screen_off;
-	unsigned long flags;
 
-	if (val != FB_EVENT_BLANK && val != FB_R_EARLY_EVENT_BLANK)
-		return 0;
-
+	ws->relax_count++;
 	/*
-	 * If FBNODE is not zero, it is not primary display(LCD)
-	 * and don't need to process these scheduling.
+	 * __pm_relax() may be called directly or from a timer function.
+	 * If it is called directly right after the timer function has been
+	 * started, but before the timer function calls __pm_relax(), it is
+	 * possible that __pm_stay_awake() will be called in the meantime and
+	 * will set ws->active.  Then, ws->active may be cleared immediately
+	 * by the __pm_relax() called from the timer function, but in such a
+	 * case ws->relax_count will be different from ws->active_count.
 	 */
-	if (info->node)
-		return NOTIFY_OK;
-
-	blank = *(int *)evdata->data;
-
-	switch (blank) {
-	case FB_BLANK_POWERDOWN:
-		is_screen_off = true;
-		break;
-	case FB_BLANK_UNBLANK:
-		is_screen_off = false;
-		break;
-	default:
-		return NOTIFY_OK;
+	if (ws->relax_count != ws->active_count) {
+		ws->relax_count--;
+		return;
 	}
+
+	ws->active = false;
 
 	now = ktime_get();
+	duration = ktime_sub(now, ws->last_time);
+	ws->total_time = ktime_add(ws->total_time, duration);
+	if (ktime_to_ns(duration) > ktime_to_ns(ws->max_time))
+		ws->max_time = duration;
 
-	rcu_read_lock();
-	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
-		spin_lock_irqsave(&ws->lock, flags);
-		if (ws->is_screen_off != is_screen_off) {
-			ws->is_screen_off = is_screen_off;
-			if (ws->active) {
-				if (is_screen_off)
-					ws->start_screen_off = now;
-				else
-					update_time_while_screen_off(ws, now);
-			}
-		}
-		spin_unlock_irqrestore(&ws->lock, flags);
-	}
-	rcu_read_unlock();
+	ws->last_time = now;
+	del_timer(&ws->timer);
+	ws->timer_expires = 0;
 
-	return NOTIFY_OK;
+	if (ws->autosleep_enabled)
+		update_prevent_sleep_time(ws, now);
+
+	/*
+	 * Increment the counter of registered wakeup events and decrement the
+	 * couter of wakeup events in progress simultaneously.
+	 */
+	cec = atomic_add_return(MAX_IN_PROGRESS, &combined_event_count);
+	trace_wakeup_source_deactivate(ws->name, cec);
+
+	split_counters(&cnt, &inpr);
+	if (!inpr && waitqueue_active(&wakeup_count_wait_queue))
+		wake_up(&wakeup_count_wait_queue);
 }
 
 static struct notifier_block fb_block = {
@@ -715,7 +719,7 @@ void __pm_wakeup_event(struct wakeup_source *ws, unsigned int msec)
 		goto unlock;
 	}
 
-	expires = jiffies + msecs_to_jiffies(msec);
+	expires = jiffies msecs_to_jiffies(msec);
 	if (!expires)
 		expires = 1;
 
@@ -760,9 +764,9 @@ void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
 		if (ws->active) {
 			if (!active)
-				len += scnprintf(pending_wakeup_source, max,
+				len= scnprintf(pending_wakeup_source, max,
 						"Pending Wakeup Sources: ");
-			len += scnprintf(pending_wakeup_source + len, max - len,
+			len= scnprintf(pending_wakeup_source len, max - len,
 				"%s ", ws->name);
 			active = true;
 		} else if (!active &&
