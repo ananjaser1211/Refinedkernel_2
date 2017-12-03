@@ -568,7 +568,8 @@ static void radeon_ttm_tt_unpin_userptr(struct ttm_tt *ttm)
 {
 	struct radeon_device *rdev = radeon_get_rdev(ttm->bdev);
 	struct radeon_ttm_tt *gtt = (void *)ttm;
-	struct sg_page_iter sg_iter;
+	struct scatterlist *sg;
+	int i;
 
 	int write = !(gtt->userflags & RADEON_GEM_USERPTR_READONLY);
 	enum dma_data_direction direction = write ?
@@ -581,8 +582,9 @@ static void radeon_ttm_tt_unpin_userptr(struct ttm_tt *ttm)
 	/* free the sg table and pages again */
 	dma_unmap_sg(rdev->dev, ttm->sg->sgl, ttm->sg->nents, direction);
 
-	for_each_sg_page(ttm->sg->sgl, &sg_iter, ttm->sg->nents, 0) {
-		struct page *page = sg_page_iter_page(&sg_iter);
+	for_each_sg(ttm->sg->sgl, sg, ttm->sg->nents, i) {
+		struct page *page = sg_page(sg);
+
 		if (!(gtt->userflags & RADEON_GEM_USERPTR_READONLY))
 			set_page_dirty(page);
 
