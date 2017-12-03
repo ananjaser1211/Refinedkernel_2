@@ -16,4 +16,3 @@ fi;
 $sudo rm -rf ramdisk split_img *new.*;
 echo "Working directory cleaned.";
 exit 0;
-

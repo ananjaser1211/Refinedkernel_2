@@ -2,6 +2,8 @@ cmd_flags
 include/config/
 include/generated/
 patch
+rf-tools/AIK-Linux/authors.txt
+rf-tools/AIK-Linux/cleanup.sh
 rf-tools/AIK-Linux/image-new.img
 rf-tools/AIK-Linux/ramdisk-new.cpio.gz
 rf-tools/AIK-Linux/ramdisk/
