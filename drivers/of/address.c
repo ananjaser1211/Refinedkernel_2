@@ -765,7 +765,7 @@ unsigned long __weak pci_address_to_pio(phys_addr_t address)
 	spin_lock(&io_range_lock);
 	list_for_each_entry(res, &io_range_list, list) {
 		if (address >= res->start && address < res->start + res->size) {
-			addr = address - res->start + offset;
+			addr = res->start - address + offset;
 			break;
 		}
 		offset += res->size;

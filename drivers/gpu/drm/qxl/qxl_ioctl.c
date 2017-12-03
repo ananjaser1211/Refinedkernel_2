@@ -122,10 +122,8 @@ static struct qxl_bo *qxlhw_handle_to_bo(struct qxl_device *qdev,
 	qobj = gem_to_qxl_bo(gobj);
 
 	ret = qxl_release_list_add(release, qobj);
-	if (ret) {
-		drm_gem_object_unreference_unlocked(gobj);
+	if (ret)
 		return NULL;
-	}
 
 	return qobj;
 }

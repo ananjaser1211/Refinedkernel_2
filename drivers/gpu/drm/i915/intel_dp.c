@@ -778,8 +778,10 @@ intel_dp_aux_ch(struct intel_dp *intel_dp,
 				      DP_AUX_CH_CTL_RECEIVE_ERROR))
 				continue;
 			if (status & DP_AUX_CH_CTL_DONE)
-				goto done;
+				break;
 		}
+		if (status & DP_AUX_CH_CTL_DONE)
+			break;
 	}
 
 	if ((status & DP_AUX_CH_CTL_DONE) == 0) {
@@ -788,7 +790,6 @@ intel_dp_aux_ch(struct intel_dp *intel_dp,
 		goto out;
 	}
 
-done:
 	/* Check for timeout or receive error.
 	 * Timeouts occur when the sink is not connected
 	 */
