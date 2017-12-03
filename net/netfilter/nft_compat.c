@@ -97,9 +97,6 @@ nft_target_set_tgchk_param(struct xt_tgchk_param *par,
 		entry->e4.ip.invflags = inv ? IPT_INV_PROTO : 0;
 		break;
 	case AF_INET6:
-		if (proto)
-			entry->e6.ipv6.flags |= IP6T_F_PROTO;
-
 		entry->e6.ipv6.proto = proto;
 		entry->e6.ipv6.invflags = inv ? IP6T_INV_PROTO : 0;
 		break;
@@ -307,9 +304,6 @@ nft_match_set_mtchk_param(struct xt_mtchk_param *par, const struct nft_ctx *ctx,
 		entry->e4.ip.invflags = inv ? IPT_INV_PROTO : 0;
 		break;
 	case AF_INET6:
-		if (proto)
-			entry->e6.ipv6.flags |= IP6T_F_PROTO;
-
 		entry->e6.ipv6.proto = proto;
 		entry->e6.ipv6.invflags = inv ? IP6T_INV_PROTO : 0;
 		break;
