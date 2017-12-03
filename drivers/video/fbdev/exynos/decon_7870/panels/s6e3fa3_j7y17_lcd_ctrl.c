@@ -22,7 +22,7 @@
 
 #if defined(CONFIG_EXYNOS_DECON_MDNIE_LITE)
 #include "mdnie.h"
-#include "mdnie_lite_table_j7y17.h"
+#include "mdnie_lite_table_j5y17.h"
 #endif
 
 #ifdef CONFIG_DISPLAY_USE_INFO
