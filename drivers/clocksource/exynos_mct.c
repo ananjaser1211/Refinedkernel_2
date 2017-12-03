@@ -490,10 +490,18 @@ static int exynos4_local_timer_setup(struct clock_event_device *evt)
 static void exynos4_local_timer_stop(struct clock_event_device *evt)
 {
 	evt->set_mode(CLOCK_EVT_MODE_UNUSED, evt);
+<<<<<<< HEAD
 	if (mct_int_type == MCT_INT_SPI)
 		disable_irq(evt->irq);
 	else
+=======
+	if (mct_int_type == MCT_INT_SPI) {
+		if (evt->irq != -1)
+			disable_irq_nosync(evt->irq);
+	} else {
+>>>>>>> 4fade75... LINUX: 3.18.18 Kernel Update
 		disable_percpu_irq(mct_irqs[MCT_L0_IRQ]);
+	}
 }
 
 static int exynos4_mct_cpu_notify(struct notifier_block *self,
