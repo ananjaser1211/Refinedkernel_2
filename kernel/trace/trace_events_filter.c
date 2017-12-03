@@ -1383,9 +1383,7 @@ static int check_preds(struct filter_parse_state *ps)
 			continue;
 		}
 		n_normal_preds++;
-		/* all ops should have operands */
-		if (cnt < 0)
-			break;
+		WARN_ON_ONCE(cnt < 0);
 	}
 
 	if (cnt != 1 || !n_normal_preds || n_logical_preds >= n_normal_preds) {
