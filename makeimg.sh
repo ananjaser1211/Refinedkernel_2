@@ -1,6 +1,4 @@
 #!/bin/bash
-$DIR=/home/elite/android/refinedkernel_2/rf-tools
-$DIRK=/home/elite/android/refinedkernel_2
 #Cleanup before build
 
 echo "Remove Any files"
@@ -21,9 +19,9 @@ echo "copy compiled zimage"
 
 sudo cp /home/elite/android/refinedkernel_2/arch/arm64/boot/Image /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
 
-# echo "copy compiled dtb"
+echo "copy compiled dtb"
 
-# sudo cp /home/elite/android/refinedkernel_2/dtb.img /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-dtb
+sudo cp /home/elite/android/refinedkernel_2/boot.img-dtb /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-dtb
 
 echo "packing image"
 

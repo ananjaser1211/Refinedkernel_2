@@ -9,7 +9,6 @@ rf-tools/AIK-Linux/ramdisk-new.cpio.gz
 rf-tools/AIK-Linux/ramdisk/
 rf-tools/AIK-Linux/split_img/
 scripts/basic/fixdep
-scripts/dtbTool/
 scripts/genksyms/genksyms
 scripts/genksyms/keywords.hash.c
 scripts/genksyms/lex.lex.c

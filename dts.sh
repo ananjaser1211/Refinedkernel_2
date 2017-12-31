@@ -8,7 +8,6 @@ make clean && make mrproper
 # J530F Config
 make j5y17lte_01_defconfig
 make exynos7870-j5y17lte_eur_open_00.dtb exynos7870-j5y17lte_eur_open_01.dtb exynos7870-j5y17lte_eur_open_02.dtb exynos7870-j5y17lte_eur_open_03.dtb exynos7870-j5y17lte_eur_open_05.dtb exynos7870-j5y17lte_eur_open_07.dtb
-# Make zImage
 # Make DT.img
 ./scripts/dtbTool/dtbTool -o ./boot.img-dtb -d $DTS/ -s 2048
 # Cleaup
