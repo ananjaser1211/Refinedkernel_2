@@ -6,10 +6,9 @@ RDIR=$(pwd)
 export CROSS_COMPILE=/home/elite/android/toolchain/ubertc-aarch64-4.9/bin/aarch64-linux-android-
 # Cleanup
 make clean && make mrproper
-# J530Y Config
+# J530G Config
 make 
-make
-# Make DT.img
+make 
 ./scripts/dtbTool/dtbTool -o ./boot.img-dtb -d $DTS/ -s 2048
 # Cleaup
 rm -rf $DTS/.*.tmp
