@@ -1,6 +1,4 @@
 #Build script for J530GM/J530YM/J530FM/J530Y With EUR_openmM DTS
-
-
 #!/bin/bash
 DTS=arch/arm64/boot/dts
 RDIR=$(pwd)
@@ -18,7 +16,46 @@ make ARCH=arm64 -j4
 rm -rf $DTS/.*.tmp
 rm -rf $DTS/.*.cmd
 rm -rf $DTS/*.dtb
-# Generate Boot_J530F_G.img
-./makeimg_j530f_g.sh
 
-echo J530F_G Kernel Done
+# Generate Boot_J530m.img
+
+echo "Remove Any files"
+cd /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux
+
+sudo ./cleanup.sh
+
+echo "Copy Ramdisk"
+
+sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/J530M/ramdisk/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/ramdisk
+
+echo "copy split-img"
+
+sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/J530M/split_img/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img
+
+echo "copy compiled zimage"
+
+sudo cp /home/elite/android/refinedkernel_2/arch/arm64/boot/Image /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
+
+echo "copy compiled dtb"
+
+sudo cp /home/elite/android/refinedkernel_2/boot.img-dtb /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-dtb
+
+echo "packing image"
+
+sudo ./repackimg.sh
+
+echo "Copy boot.img"
+
+sudo cp /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/image-new.img /home/elite/android/refinedkernel_2/rf-tools/out/boot_J530M.img
+
+echo "Cleanup after packing"
+
+cd /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux
+
+sudo ./cleanup.sh
+
+rm /home/elite/android/refinedkernel_2/boot.img-dtb
+
+echo "boot.img saved to /rf-tools/out"
+
+echo J530m Kernel Done
