@@ -17,6 +17,20 @@ config SUSPEND_FREEZER
 	  done, no tasks are frozen for suspend to RAM/standby.
 
 	  Turning OFF this setting is NOT recommended! If in doubt, say Y.
+	  
+config POWERSUSPEND
+	bool "Power suspend"
+	default n
+	---help---
+	  Call early suspend handlers when the user requested sleep state
+	  changes.
+
+config POWERSUSPEND_DEBUG
+	bool "Powersuspend driver debugging code"
+	depends on POWERSUSPEND
+	help
+	  Output debugging info in dmesg [POWERSUSPEND] (Yank555.lu)
+
 
 config WAKELOCK
 	bool "Android's method of preventing suspend"
@@ -327,6 +341,6 @@ config SUSPEND_TIME
 	  /sys/kernel/debug/suspend_time
 
 config	BOEFFLA_WL_BLOCKER
-		bool "Boeffla generic wakelock blocker driver"
-		depends on PM
-		default N
+ 		bool "Boeffla generic wakelock blocker driver"
+ 		depends on PM
+ 		default N
