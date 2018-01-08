@@ -67,7 +67,7 @@ config THUNDERPLUG_CONTROL
 	depends on SMP && HOTPLUG_CPU
 	default n
 	help
-	  This driver hotplugs cpu cores based on per-core load	
+	  This driver hotplugs cpu cores based on per-core load
 
 endif #SOC_SAMSUNG
 
