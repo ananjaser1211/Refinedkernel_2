@@ -64,6 +64,9 @@ void register_power_suspend(struct power_suspend *handler)
 	list_add_tail(&handler->link, pos);
 	mutex_unlock(&power_suspend_lock);
 }
+
+bool power_suspended = false;
+
 EXPORT_SYMBOL(register_power_suspend);
 
 void unregister_power_suspend(struct power_suspend *handler)
@@ -151,12 +154,14 @@ void set_power_suspend_state(int new_state)
 			pr_info("[POWERSUSPEND] state activated.\n");
 			#endif
 			state = new_state;
+			power_suspended = true;
 			queue_work(suspend_work_queue, &power_suspend_work);
 		} else if (state == POWER_SUSPEND_ACTIVE && new_state == POWER_SUSPEND_INACTIVE) {
 			#ifdef CONFIG_POWERSUSPEND_DEBUG
 			pr_info("[POWERSUSPEND] state deactivated.\n");
 			#endif
 			state = new_state;
+			power_suspended = false;
 			queue_work(suspend_work_queue, &power_resume_work);
 		}
 		spin_unlock_irqrestore(&state_lock, irqflags);
