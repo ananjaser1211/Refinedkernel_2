@@ -15,7 +15,7 @@ make ARCH=arm64 -j4
 rm -rf $DTS/.*.tmp
 rm -rf $DTS/.*.cmd
 rm -rf $DTS/*.dtb
-# Generate Boot_J530F.img
-./makeimg_j530f.sh
+# Generate Boot_J530F_G.img
+./makeimg_j530f_g.sh
 
-echo J530F Kernel Done
+echo J530F_G Kernel Done
