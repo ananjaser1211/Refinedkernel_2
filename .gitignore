@@ -33,3 +33,6 @@ arch/arm64/include/generated/
 boot.img-dtb
 rf-tools/out/boot_J530F.img
 dmesg.sh
+drivers/leds/.tmp_led-class.ver
+rf-tools/out/
+drivers/leds/.tmp_led-class.ver
