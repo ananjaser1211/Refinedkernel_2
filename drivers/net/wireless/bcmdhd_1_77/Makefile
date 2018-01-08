@@ -285,12 +285,12 @@ DHDCFLAGS += -DDHD_BLOB_EXISTENCE_CHECK
 # Random mac scan
 DHDCFLAGS += -DSUPPORT_RANDOM_MAC_SCAN
 
-ANDROID_PLATFORM_VERSION = 7
+ANDROID_PLATFORM_VERSION = 6
 # If Android version lower than 7(Nougat) => Use Legacy File path
 ifeq ($(shell expr $(ANDROID_PLATFORM_VERSION) \< 7),1)
 DHDCFLAGS += -DDHD_LEGACY_FILE_PATH
 $(warning Will be use Legacy file path)
-endif
+endif           
 
 ##############################
 # Android Platform Definition
