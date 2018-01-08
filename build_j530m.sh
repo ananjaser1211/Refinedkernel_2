@@ -1,4 +1,5 @@
-#Build script for J530F/J530G With EUR_OPEN DTS
+#Build script for J530GM/J530YM/J530FM/J530Y With EUR_OPENM DTS
+
 
 #!/bin/bash
 DTS=arch/arm64/boot/dts
