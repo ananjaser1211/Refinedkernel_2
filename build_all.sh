@@ -42,6 +42,10 @@ echo "copy compiled zimage"
 
 sudo cp /home/elite/android/refinedkernel_2/arch/arm64/boot/Image /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
 
+echo "copy compiled zimage again"
+
+sudo cp /home/elite/android/refinedkernel_2/arch/arm64/boot/Image /home/elite/android/refinedkernel_2/rf-tools/boot.img-zImage
+
 echo "copy compiled dtb"
 
 sudo cp /home/elite/android/refinedkernel_2/bootfg.img-dtb /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-dtb
@@ -94,7 +98,7 @@ sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/Unified/split_img/. /hom
 
 echo "copy compiled zimage"
 
-sudo cp /home/elite/android/refinedkernel_2/arch/arm64/boot/Image /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
+sudo cp /home/elite/android/refinedkernel_2/rf-tools/boot.img-zImage /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img/boot.img-zImage
 
 echo "copy compiled dtb"
 
@@ -113,6 +117,8 @@ echo "Cleanup after packing"
 cd /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux
 
 sudo ./cleanup.sh
+
+sudo rm /home/elite/android/refinedkernel_2/rf-tools/boot.img-zImage
 
 echo "boot.img saved to /rf-tools/out"
 
