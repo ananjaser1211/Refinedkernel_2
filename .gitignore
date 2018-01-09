@@ -36,3 +36,6 @@ dmesg.sh
 drivers/leds/.tmp_led-class.ver
 rf-tools/out/
 drivers/leds/.tmp_led-class.ver
+bootfg.img-dtb
+crypto/.tmp_scatterwalk.ver
+kernel/rcu/.tmp_update.ver
