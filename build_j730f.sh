@@ -57,5 +57,3 @@ sudo ./cleanup.sh
 echo "boot.img saved to /rf-tools/out"
 
 echo J730F Kernel Done
-
-echo J730F Kernel Done
