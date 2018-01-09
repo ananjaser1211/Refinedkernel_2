@@ -25,6 +25,10 @@ module_param(fsync_enabled, bool, 0755);
 #include <linux/statfs.h>
 #endif
 
+#ifdef CONFIG_DYNAMIC_FSYNC
+#include <linux/dyn_sync_cntrl.h>
+#endif
+
 #define VALID_FLAGS (SYNC_FILE_RANGE_WAIT_BEFORE|SYNC_FILE_RANGE_WRITE| \
 			SYNC_FILE_RANGE_WAIT_AFTER)
 
@@ -278,6 +282,15 @@ int intr_sync(int *sync_ret)
 }
 #endif /* CONFIG_INTERRUPTIBLE_SYNC */
 
+#ifdef CONFIG_ASYNC_FSYNC
+#define FLAG_ASYNC_FSYNC        0x1
+static struct workqueue_struct *fsync_workqueue = NULL;
+struct fsync_work {
+	struct work_struct work;
+	char pathname[256];
+};
+#endif
+
 /*
  * Do the filesystem syncing work. For simple filesystems
  * writeback_inodes_sb(sb) just dirties buffers with inodes so we have to
@@ -346,6 +359,21 @@ static void fdatawait_one_bdev(struct block_device *bdev, void *arg)
 {
 	filemap_fdatawait(bdev->bd_inode->i_mapping);
 }
+
+#ifdef CONFIG_DYNAMIC_FSYNC
+/*
+ * Sync all the data for all the filesystems (called by sys_sync() and
+ * emergency sync)
+ */
+void sync_filesystems(int wait)
+{
+	iterate_supers(sync_inodes_one_sb, NULL);
+	iterate_supers(sync_fs_one_sb, &wait);
+	iterate_supers(sync_fs_one_sb, &wait);
+	iterate_bdevs(fdatawrite_one_bdev, NULL);
+	iterate_bdevs(fdatawait_one_bdev, NULL);
+}
+#endif
 
 /*
  * Sync everything. We start by waking flusher threads so that most of
@@ -441,7 +469,11 @@ int vfs_fsync_range(struct file *file, loff_t start, loff_t end, int datasync)
 	if (!fsync_enabled)
 		return 0;
 
-	if (!file->f_op->fsync)
+#ifdef CONFIG_DYNAMIC_FSYNC
+	if (likely(dyn_fsync_active && suspend_active))
+		return 0;
+#endif
+	if (!file->f_op || !file->f_op->fsync)
 		return -EINVAL;
 	return file->f_op->fsync(file, start, end, datasync);
 }
@@ -523,13 +555,55 @@ static int do_fsync(unsigned int fd, int datasync)
 {
 	struct fd f = fdget(fd);
 	int ret = -EBADF;
-	
+#ifdef CONFIG_ASYNC_FSYNC
+        struct fsync_work *fwork;
+#endif
+
 	if (!fsync_enabled)
 		return 0;
 
 	if (f.file) {
+#ifdef CONFIG_ASYNC_FSYNC
+                ktime_t fsync_t, fsync_diff;
+                char pathname[256], *path;
+                path = d_path(&(f.file->f_path), pathname, sizeof(pathname));
+                if (IS_ERR(path))
+                        path = "(unknown)";
+                else if (async_fsync(f.file, fd)) {
+                        if (!fsync_workqueue)
+                                fsync_workqueue =
+                                        create_singlethread_workqueue("fsync");
+                        if (!fsync_workqueue)
+                                goto no_async;
+
+                        if (IS_ERR(path))
+                                goto no_async;
+
+                        fwork = kmalloc(sizeof(*fwork), GFP_KERNEL);
+                        if (fwork) {
+                                strncpy(fwork->pathname, path,
+                                        sizeof(fwork->pathname) - 1);
+                                INIT_WORK(&fwork->work, do_afsync_work);
+                                queue_work(fsync_workqueue, &fwork->work);
+                                fdput(f);
+                                return 0;
+                        }
+                }
+no_async:
+                fsync_t = ktime_get();
+#endif
 		ret = vfs_fsync(f.file, datasync);
 		fdput(f);
+#ifdef CONFIG_ASYNC_FSYNC
+                fsync_diff = ktime_sub(ktime_get(), fsync_t);
+                if (ktime_to_ms(fsync_diff) >= 5000) {
+                        pr_info("VFS: %s pid:%d(%s)(parent:%d/%s)\
+                                takes %lld ms to fsync %s.\n", __func__,
+                                current->pid, current->comm,
+                                current->parent->pid, current->parent->comm,
+                                ktime_to_ms(fsync_diff), path);
+                }
+#endif
 	}
 	return ret;
 }
@@ -539,6 +613,10 @@ SYSCALL_DEFINE1(fsync, unsigned int, fd)
 	if (!fsync_enabled)
 		return 0;
 
+#ifdef CONFIG_DYNAMIC_FSYNC
+	if (likely(dyn_fsync_active && suspend_active))
+		return 0;
+#endif
 	return do_fsync(fd, 0);
 }
 
@@ -546,7 +624,11 @@ SYSCALL_DEFINE1(fdatasync, unsigned int, fd)
 {
 	if (!fsync_enabled)
 		return 0;
-		
+
+#ifdef CONFIG_DYNAMIC_FSYNC
+	if (likely(dyn_fsync_active && suspend_active))
+		return 0;
+#endif
 	return do_fsync(fd, 1);
 }
 
@@ -608,6 +690,11 @@ SYSCALL_DEFINE4(sync_file_range, int, fd, loff_t, offset, loff_t, nbytes,
 
 	if (!fsync_enabled)
 		return 0;
+
+#ifdef CONFIG_DYNAMIC_FSYNC
+	if (likely(dyn_fsync_active && suspend_active))
+		return 0;
+#endif
 
 	ret = -EINVAL;
 	if (flags & ~VALID_FLAGS)
@@ -688,5 +775,9 @@ out:
 SYSCALL_DEFINE4(sync_file_range2, int, fd, unsigned int, flags,
 				 loff_t, offset, loff_t, nbytes)
 {
+#ifdef CONFIG_DYNAMIC_FSYNC
+	if (likely(dyn_fsync_active && suspend_active))
+		return 0;
+#endif
 	return sys_sync_file_range(fd, offset, nbytes, flags);
 }

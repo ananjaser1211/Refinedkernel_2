@@ -270,7 +270,7 @@ source "fs/cifs/Kconfig"
 source "fs/ncpfs/Kconfig"
 source "fs/coda/Kconfig"
 source "fs/afs/Kconfig"
-source "fs/9p/Kconfig"
+source "fs/9p/Kconfig"	
 
 endif # NETWORK_FILESYSTEMS
 
@@ -283,8 +283,8 @@ config ASYNC_FSYNC
 
 config DYNAMIC_FSYNC
 	bool "dynamic file sync control"
-	default n
+	default y
 	help
-	An experimental file sync control using Android's power suspend / late resume drivers
+	  An experimental file sync control using new power_suspend driver 	  
 
 endmenu
