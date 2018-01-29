@@ -1,4 +1,4 @@
-#Build script for J530GM/J530YM/J530FM/J530Y With EUR_openmM DTS
+#Build script for J530GM/J530FM/ With EUR_openmM DTS
 #!/bin/bash
 DTS=arch/arm64/boot/dts
 RDIR=$(pwd)

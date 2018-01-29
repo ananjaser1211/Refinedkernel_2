@@ -39,3 +39,6 @@ drivers/leds/.tmp_led-class.ver
 bootfg.img-dtb
 crypto/.tmp_scatterwalk.ver
 kernel/rcu/.tmp_update.ver
+.config.old
+arch/arm/include/generated/
+drivers/misc/dualwave/dualwave.mod.c
