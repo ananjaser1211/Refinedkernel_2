@@ -124,6 +124,10 @@ echo "boot.img saved to /rf-tools/out"
 
 echo J530m Kernel Done
 
+# Build J530Y Kernel
+
+# cd /home/elite/android/refinedkernel_2
+
 # Build J730F Kernel
 
 cd /home/elite/android/refinedkernel_2
