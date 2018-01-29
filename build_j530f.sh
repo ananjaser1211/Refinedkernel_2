@@ -26,11 +26,11 @@ sudo ./cleanup.sh
 
 echo "Copy Ramdisk"
 
-sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/J530F_G/ramdisk/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/ramdisk
+sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/Unified/ramdisk/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/ramdisk
 
 echo "copy split-img"
 
-sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/J530F_G/split_img/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img
+sudo cp -a /home/elite/android/refinedkernel_2/rf-tools/Unified/split_img/. /home/elite/android/refinedkernel_2/rf-tools/AIK-Linux/split_img
 
 echo "copy compiled zimage"
 
