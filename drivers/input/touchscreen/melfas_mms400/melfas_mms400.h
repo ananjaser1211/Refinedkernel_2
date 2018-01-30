@@ -325,6 +325,7 @@ struct mms_ts_info {
 	u8 check_multi;
 	unsigned int multi_count;
 	unsigned int comm_err_count;
+	bool dt2w_enable;
 };
 
 enum IC_STATUS{
