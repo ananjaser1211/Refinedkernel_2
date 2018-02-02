@@ -43,6 +43,5 @@ kernel/rcu/.tmp_update.ver
 arch/arm/include/generated/
 drivers/misc/dualwave/dualwave.mod.c
 .tmpconfig.8779
-rf-tools/J530_KERNEL/META-INF/com/google/android/updater-script
+rf-tools/J530_KERNEL/META-INF/com/google/android/updater-script/
 rf-tools/J530_KERNEL/*
-rf-tools/J530_KERNEL/META-INF/com/google/android/updater-script

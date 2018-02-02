@@ -68,7 +68,6 @@
 			compatible = "exynos8890-ion,vframe";
 			secure;
 			reusable;
-			ion,bulk_reclaim;
 			reg = <0x0 0x82000000 0x5400000>;
 			id = <5>;
 			compat-id = <26 29>;
