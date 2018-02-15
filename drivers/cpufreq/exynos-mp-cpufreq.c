@@ -834,7 +834,7 @@ static void disable_nonboot_cluster_cpus(void)
 	pm_qos_update_request(&cpufreq_cpu_hotplug_request, NR_CLUST1_CPUS);
 }
 
-static bool hmp_boosted = false;
+static bool hmp_boosted = true;
 static bool cluster1_hotplugged = false;
 
 static ssize_t show_cpufreq_table(struct kobject *kobj,
