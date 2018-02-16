@@ -44,9 +44,6 @@ static void remove_safetynet_flags(char *cmd)
 	remove_flag(cmd, "androidboot.secboot=");
 	remove_flag(cmd, "androidboot.verifiedbootstate=");
 	remove_flag(cmd, "androidboot.veritymode=");
-	remove_flag(cmd, "androidboot.boot.warranty_bit=");
-	remove_flag(cmd, "androidboot.warranty_bit=");
-	remove_flag(cmd, "androidboot.fmp_config=");
 }
 
 static int __init proc_cmdline_init(void)
