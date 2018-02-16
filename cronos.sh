@@ -37,8 +37,8 @@ CR_ARCH=arm64
 echo "----------------------------------------------"
 echo "Cleaning"
 echo " "
-make clean
-make mrproper
+# make clean
+# make mrproper
 rm -r -f $CR_OUT/*
 echo " "
 echo "----------------------------------------------"
