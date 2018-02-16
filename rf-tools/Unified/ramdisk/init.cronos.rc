@@ -15,3 +15,12 @@ service fake_knox /sbin/fake_knox.sh
     oneshot
     disabled
 	
+on post-fs-data
+
+# PrivateMode Mountpoints     
+   mkdir /mnt/shell/ 0750 shell shell
+   mkdir /mnt/shell/privatemode 0700 system system
+   mkdir /storage/Private 0000 system system
+   mkdir /data/privatemode 0770 system system
+   chown system system /data/privatemode
+   restorecon /data/privatemode
