@@ -42,3 +42,6 @@ ro.security.vaultkeeper.feature=0
 ro.frp.pst=
 ro.securestorage.support=false
 ro.config.dmverity=false
+ro.config.rkp=false
+ro.config.kap=false
+ro.config.tima=0
