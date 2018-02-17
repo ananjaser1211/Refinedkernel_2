@@ -727,7 +727,12 @@ enum sock_flags {
 		     */
 	SOCK_FILTER_LOCKED, /* Filter cannot be changed anymore */
 	SOCK_SELECT_ERR_QUEUE, /* Wake select on error queue */
+#ifdef CONFIG_MPTCP
+	SOCK_MPTCP, /* MPTCP set on this socket */
+#endif
 };
+
+#define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
 
 static inline void sock_copy_flags(struct sock *nsk, struct sock *osk)
 {
@@ -803,7 +808,7 @@ void sk_stream_write_space(struct sock *sk);
 static inline void __sk_add_backlog(struct sock *sk, struct sk_buff *skb)
 {
 	/* dont let skb dst not refcounted, we are going to leave rcu lock */
-	skb_dst_force(skb);
+	skb_dst_force_safe(skb);
 
 	if (!sk->sk_backlog.tail)
 		sk->sk_backlog.head = skb;
@@ -832,6 +837,14 @@ static inline __must_check int sk_add_backlog(struct sock *sk, struct sk_buff *s
 {
 	if (sk_rcvqueues_full(sk, limit))
 		return -ENOBUFS;
+
+	/*
+	 * If the skb was allocated from pfmemalloc reserves, only
+	 * allow SOCK_MEMALLOC sockets to use it as this socket is
+	 * helping free memory
+	 */
+	if (skb_pfmemalloc(skb) && !sock_flag(sk, SOCK_MEMALLOC))
+		return -ENOMEM;
 
 	__sk_add_backlog(sk, skb);
 	sk->sk_backlog.len += skb->truesize;
@@ -926,6 +939,18 @@ void sk_set_memalloc(struct sock *sk);
 void sk_clear_memalloc(struct sock *sk);
 
 int sk_wait_data(struct sock *sk, long *timeo);
+
+#ifdef CONFIG_MPTCP
+/* START - needed for MPTCP */
+struct sock *sk_prot_alloc(struct proto *prot, gfp_t priority, int family);
+void sock_lock_init(struct sock *sk);
+
+extern struct lock_class_key af_callback_keys[AF_MAX];
+extern char *const af_family_clock_key_strings[AF_MAX+1];
+
+#define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
+/* END - needed for MPTCP */
+#endif
 
 struct request_sock_ops;
 struct timewait_sock_ops;

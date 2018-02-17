@@ -1552,7 +1552,7 @@ bool tcp_prequeue(struct sock *sk, struct sk_buff *skb)
 	if (likely(sk->sk_rx_dst))
 		skb_dst_drop(skb);
 	else
-		skb_dst_force(skb);
+		skb_dst_force_safe(skb);
 
 	__skb_queue_tail(&tp->ucopy.prequeue, skb);
 	tp->ucopy.memory += skb->truesize;
@@ -1571,7 +1571,11 @@ bool tcp_prequeue(struct sock *sk, struct sk_buff *skb)
 	} else if (skb_queue_len(&tp->ucopy.prequeue) == 1) {
 		wake_up_interruptible_sync_poll(sk_sleep(sk),
 					   POLLIN | POLLRDNORM | POLLRDBAND);
-		if (!inet_csk_ack_scheduled(sk))
+		if (!inet_csk_ack_scheduled(sk)
+#ifdef CONFIG_MPTCP
+		 && !mptcp(tp)
+#endif
+		 )
 			inet_csk_reset_xmit_timer(sk, ICSK_TIME_DACK,
 						  (3 * tcp_rto_min(sk)) / 4,
 						  TCP_RTO_MAX);
@@ -1589,6 +1593,9 @@ int tcp_v4_rcv(struct sk_buff *skb)
 	const struct iphdr *iph;
 	const struct tcphdr *th;
 	struct sock *sk;
+#ifdef CONFIG_MPTCP
+	struct sock *meta_sk = NULL;
+#endif
 	int ret;
 	struct net *net = dev_net(skb->dev);
 
@@ -1629,14 +1636,20 @@ int tcp_v4_rcv(struct sk_buff *skb)
 	TCP_SKB_CB(skb)->end_seq = (TCP_SKB_CB(skb)->seq + th->syn + th->fin +
 				    skb->len - th->doff * 4);
 	TCP_SKB_CB(skb)->ack_seq = ntohl(th->ack_seq);
+#ifdef CONFIG_MPTCP
+	TCP_SKB_CB(skb)->mptcp_flags = 0;
+	TCP_SKB_CB(skb)->dss_off = 0;
+#endif
 	TCP_SKB_CB(skb)->tcp_flags = tcp_flag_byte(th);
 	TCP_SKB_CB(skb)->tcp_tw_isn = 0;
 	TCP_SKB_CB(skb)->ip_dsfield = ipv4_get_dsfield(iph);
 	TCP_SKB_CB(skb)->sacked	 = 0;
 
 	sk = __inet_lookup_skb(&tcp_hashinfo, skb, th->source, th->dest);
+#ifndef CONFIG_MPTCP
 	if (!sk)
 		goto no_tcp_socket;
+#endif
 
 process:
 	if (sk->sk_state == TCP_TIME_WAIT)
