@@ -406,9 +406,9 @@
 		/* For CPUFREQ table */
 		/* CL0 */
 		cl0_idx_num = <17>;
-		cl0_max_support_idx = <1>;
+		cl0_max_support_idx = <2>;
 		cl0_min_support_idx = <16>;
-		cl0_boot_max_qos = <1924000>;
+		cl0_boot_max_qos = <1794000>;
 		cl0_boot_min_qos = <1586000>;
 		cl0_boot_lock_time = <40000000>;
 		cl0_en_ema = <1>;
@@ -416,9 +416,9 @@
 
 		/* CL1 */
 		cl1_idx_num = <17>;
-		cl1_max_support_idx = <1>;
+		cl1_max_support_idx = <2>;
 		cl1_min_support_idx = <16>;
-		cl1_boot_max_qos = <1924000>;
+		cl1_boot_max_qos = <1794000>;
 		cl1_boot_min_qos = <1586000>;
 		cl1_boot_lock_time = <40000000>;
 		cl1_en_ema = <1>;

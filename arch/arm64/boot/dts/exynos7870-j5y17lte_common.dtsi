@@ -642,23 +642,25 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <7>;
-		
-		freq_clip_max_0 = <1690000>;
-		freq_clip_max_1 = <1586000>;
-		freq_clip_max_2 = <1248000>;
+		freq_tab_count = <8>;
+
+		freq_clip_max_0 = <1794000>;
+		freq_clip_max_1 = <1690000>;
+		freq_clip_max_2 = <1586000>;
 		freq_clip_max_3 = <1248000>;
-		freq_clip_max_4 = <546000>;
-		freq_clip_max_5 = <449000>;
-		freq_clip_max_6 = <343000>;
+		freq_clip_max_4 = <1248000>;
+		freq_clip_max_5 = <546000>;
+		freq_clip_max_6 = <449000>;
+		freq_clip_max_7 = <343000>;
 		
 		cooling_level_0 = <76>;
 		cooling_level_1 = <76>;
-		cooling_level_2 = <81>;
-		cooling_level_3 = <86>;
-		cooling_level_4 = <91>;
-		cooling_level_5 = <96>;
-		cooling_level_6 = <96>;		
+		cooling_level_2 = <76>;
+		cooling_level_3 = <81>;
+		cooling_level_4 = <86>;
+		cooling_level_5 = <91>;
+		cooling_level_6 = <96>;
+		cooling_level_7 = <96>;		
 	};
 
 	tmuctrl_1: tmuctrl_CPUCL1@10130000 {
@@ -669,7 +671,7 @@
 		non_hw_trigger_levels = <7>;
 
 		/* Throttling Level */
-		trigger_levels_0 = <76>;
+		trigger_levels_0 = <71>;
 		trigger_levels_1 = <81>;
 		trigger_levels_2 = <86>;
 		trigger_levels_3 = <91>;
@@ -696,23 +698,25 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <7>;
-		
-		freq_clip_max_0 = <1690000>;
-		freq_clip_max_1 = <1586000>;
-		freq_clip_max_2 = <1248000>;
+		freq_tab_count = <8>;
+
+		freq_clip_max_0 = <1794000>;
+		freq_clip_max_1 = <1690000>;
+		freq_clip_max_2 = <1586000>;
 		freq_clip_max_3 = <1248000>;
-		freq_clip_max_4 = <546000>;
-		freq_clip_max_5 = <449000>;
-		freq_clip_max_6 = <343000>;
+		freq_clip_max_4 = <1248000>;
+		freq_clip_max_5 = <546000>;
+		freq_clip_max_6 = <449000>;
+		freq_clip_max_7 = <343000>;
 		
-		cooling_level_0 = <76>;
+		cooling_level_0 = <71>;
 		cooling_level_1 = <76>;
-		cooling_level_2 = <81>;
-		cooling_level_3 = <86>;
-		cooling_level_4 = <91>;
-		cooling_level_5 = <96>;
+		cooling_level_2 = <76>;
+		cooling_level_3 = <81>;
+		cooling_level_4 = <86>;
+		cooling_level_5 = <91>;
 		cooling_level_6 = <96>;
+		cooling_level_7 = <96>;
 		
 		hotplug_enable = <1>;
 		hotplug_in_threshold = <91>;
