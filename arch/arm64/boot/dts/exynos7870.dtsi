@@ -406,7 +406,7 @@
 		/* For CPUFREQ table */
 		/* CL0 */
 		cl0_idx_num = <17>;
-		cl0_max_support_idx = <0>;
+		cl0_max_support_idx = <1;
 		cl0_min_support_idx = <16>;
 		cl0_boot_max_qos = <1482000>;
 		cl0_boot_min_qos = <1482000>;
@@ -416,7 +416,7 @@
 
 		/* CL1 */
 		cl1_idx_num = <17>;
-		cl1_max_support_idx = <0>;
+		cl1_max_support_idx = <1;
 		cl1_min_support_idx = <16>;
 		cl1_boot_max_qos = <1482000>;
 		cl1_boot_min_qos = <1482000>;
@@ -1850,9 +1850,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head */
-			input_booster,cpu_freqs = <1248000>;
+			input_booster,cpu_freqs = <1144000>;
 			input_booster,hmp_boost = <1>;
-			input_booster,kfc_freqs = <1248000>;
+			input_booster,kfc_freqs = <1144000>;
 			input_booster,mif_freqs = <0>;
 			input_booster,int_freqs = <0>;
 
@@ -1869,9 +1869,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head */
-			input_booster,cpu_freqs = <1248000>;
+			input_booster,cpu_freqs = <1144000>;
 			input_booster,hmp_boost = <1>;
-			input_booster,kfc_freqs = <1248000>;
+			input_booster,kfc_freqs = <1144000>;
 			input_booster,mif_freqs = <0>;
 			input_booster,int_freqs = <0>;
 
@@ -1888,9 +1888,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head, 2_Head, 2_Tail */
-			input_booster,cpu_freqs = <1248000 1248000 1014000>;
+			input_booster,cpu_freqs = <1144000 1144000 1014000>;
 			input_booster,hmp_boost = <1 1 0>;
-			input_booster,kfc_freqs = <1248000 1248000 1014000>;
+			input_booster,kfc_freqs = <1144000 1144000 1014000>;
 			input_booster,mif_freqs = <0 0 0>;
 			input_booster,int_freqs = <0 0 0>;
 
@@ -1907,9 +1907,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1482000 1014000>;
+			input_booster,cpu_freqs = <1248000 1014000>;
 			input_booster,hmp_boost = <1 1>;
-			input_booster,kfc_freqs = <1482000 1014000>;
+			input_booster,kfc_freqs = <1248000 1014000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -1926,9 +1926,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1248000 1248000>;
+			input_booster,cpu_freqs = <1144000 1144000>;
 			input_booster,hmp_boost = <1 1>;
-			input_booster,kfc_freqs = <1248000 1248000>;
+			input_booster,kfc_freqs = <1144000 1144000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
