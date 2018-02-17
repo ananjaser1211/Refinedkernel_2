@@ -45,7 +45,7 @@ drivers/misc/dualwave/dualwave.mod.c
 .tmpconfig.8779
 rf-tools/J530_KERNEL/META-INF/com/google/android/updater-script/
 rf-tools/J530_KERNEL/*
-
+dmesg.sh
 
 
 
@@ -6885,4 +6885,20 @@ usr/modules.builtin
 usr/modules.order
 vmlinux
 vmlinux.o
+arch/arm64/boot/Image
+arch/arm64/boot/dts/.exynos7870-smdk7870.dtb.cmd
+arch/arm64/boot/dts/.exynos7870-smdk7870.dtb.d.dtc.tmp
+arch/arm64/boot/dts/.exynos7870-smdk7870.dtb.d.pre.tmp
+arch/arm64/boot/dts/.exynos7870-smdk7870.dtb.dts.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870.dtb.cmd
+arch/arm64/boot/dts/.exynos7870-universal7870.dtb.d.dtc.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870.dtb.d.pre.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870.dtb.dts.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870_rev01.dtb.cmd
+arch/arm64/boot/dts/.exynos7870-universal7870_rev01.dtb.d.dtc.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870_rev01.dtb.d.pre.tmp
+arch/arm64/boot/dts/.exynos7870-universal7870_rev01.dtb.dts.tmp
+arch/arm64/boot/dts/exynos7870-smdk7870.dtb
+arch/arm64/boot/dts/exynos7870-universal7870.dtb
+arch/arm64/boot/dts/exynos7870-universal7870_rev01.dtb
 

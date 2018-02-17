@@ -23,19 +23,10 @@
 #include <linux/devfreq.h>
 #include <linux/workqueue.h>
 #include <linux/platform_device.h>
-#include <linux/sysfs_helpers.h>
 #include <linux/list.h>
 #include <linux/printk.h>
 #include <linux/hrtimer.h>
 #include "governor.h"
-
-#ifdef CONFIG_SOC_EXYNOS8890
-#define DF_MAX_VOLT		900000
-#define DF_MIN_VOLT		800000
-#define DF_VOLT_STEP		6250
-#else
-#error "Please define core voltage ranges for current SoC."
-#endif
 
 static struct class *devfreq_class;
 
@@ -1091,70 +1082,6 @@ static ssize_t time_in_state_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(time_in_state);
 
-static ssize_t volt_table_store(struct device *d, struct device_attribute *attr,
-			      const char *buf, size_t count)
-{
-	struct devfreq *df = to_devfreq(d);
-	struct device *dev = df->dev.parent;
-	struct device_opp *dev_opp = find_device_opp(dev);
-	struct dev_pm_opp *temp_opp;
-	int u[15];
-	int rest, t, i = 0;
-
-	if ((t = read_into((int*)&u, 15, buf, count)) < 0)
-		return -EINVAL;
-
-	mutex_lock(&df->lock);
-	if (t == 2 && 15 != 2) {
-		temp_opp = dev_pm_opp_find_freq_exact(dev, u[0], true);
-		if(IS_ERR(temp_opp))
-			return -EINVAL;
-
-		if ((rest = (u[1] % DF_VOLT_STEP)) != 0) 
-			u[1] += DF_VOLT_STEP - rest;
-		
-		sanitize_min_max(u[1], DF_MIN_VOLT, DF_MAX_VOLT);
-		temp_opp->u_volt = u[1];
-	} else {
-		list_for_each_entry_rcu(temp_opp, &dev_opp->opp_list, node) {
-			if (temp_opp->available) {
-				if ((rest = (u[i] % DF_VOLT_STEP)) != 0) 
-					u[i] += DF_VOLT_STEP - rest;
-				
-				sanitize_min_max(u[i], DF_MIN_VOLT, DF_MAX_VOLT);
-				temp_opp->u_volt = u[i++];
-			}
-		}
-	}
-
-	mutex_unlock(&df->lock);
-
-	return count;
-}
-
-static ssize_t volt_table_show(struct device *d, 
-				struct device_attribute *attr, char *buf)
-{
-	struct devfreq *df = to_devfreq(d);
-	struct device *dev = df->dev.parent;
-	struct device_opp *dev_opp = find_device_opp(dev);
-	struct dev_pm_opp *temp_opp;
-	int len = 0;
-
-	if (IS_ERR_OR_NULL(dev_opp))
-		return -EINVAL;
-
-	list_for_each_entry_rcu(temp_opp, &dev_opp->opp_list, node) {
-		if (temp_opp->available)
-			len += sprintf(buf + len, "%lu %lu\n",
-					dev_pm_opp_get_freq(temp_opp),
-					dev_pm_opp_get_voltage(temp_opp));
-	}
-
-	return len;
-}
-static DEVICE_ATTR_RW(volt_table);
-
 static struct attribute *devfreq_attrs[] = {
 	&dev_attr_governor.attr,
 	&dev_attr_available_governors.attr,
@@ -1166,7 +1093,6 @@ static struct attribute *devfreq_attrs[] = {
 	&dev_attr_max_freq.attr,
 	&dev_attr_trans_stat.attr,
 	&dev_attr_time_in_state.attr,
-	&dev_attr_volt_table.attr,
 	NULL,
 };
 ATTRIBUTE_GROUPS(devfreq);
@@ -1179,7 +1105,9 @@ static int __init devfreq_init(void)
 		return PTR_ERR(devfreq_class);
 	}
 
-	devfreq_wq = create_freezable_workqueue("devfreq_wq");
+	devfreq_wq = alloc_workqueue("devfreq_wq",
+			    WQ_HIGHPRI | WQ_UNBOUND | WQ_FREEZABLE |
+			    WQ_MEM_RECLAIM, 0);
 	if (!devfreq_wq) {
 		class_destroy(devfreq_class);
 		pr_err("%s: couldn't create workqueue\n", __FILE__);
