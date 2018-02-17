@@ -26,6 +26,7 @@ scripts/mod/modpost
 scripts/selinux/genheaders/genheaders
 scripts/selinux/mdp/mdp
 scripts/sortextable
+lazy.sh
 .config
 .version
 Module.symvers
