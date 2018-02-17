@@ -26,6 +26,6 @@ obj-$(CONFIG_CHARGER_MAX77888)	+= max77888_charger.o
 obj-$(CONFIG_CHARGER_MAX77833)	+= max77833_charger.o
 obj-$(CONFIG_CHARGER_S2MU003)   += s2mu003_charger.o
 obj-$(CONFIG_WIRELESS_CHARGER_BQ51221)	+= bq51221_charger.o
-obj-$(CONFIG_CHARGER_S2MU005)   += s2mu005_charger.o
+obj-$(CONFIG_CHARGER_S2MU005)   += s2mu005_charger.o sec_control.o
 obj-$(CONFIG_CHARGER_SM5703)	+= sm5703_charger.o
 obj-$(CONFIG_CHARGER_SM5705)	+= sm5705_charger.o sm5705_charger_oper.o
