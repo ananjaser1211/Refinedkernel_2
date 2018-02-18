@@ -1,8 +1,12 @@
 on init
-    write /sys/class/android_usb/android0/iSerial $ro.serialno
-    write /sys/class/android_usb/android0/f_rndis/manufacturer Samsung
-    write /sys/class/android_usb/android0/f_rndis/vendorID 04e8
-    write /sys/class/android_usb/android0/f_rndis/wceis 1
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 04e8
+    write /sys/class/android_usb/android0/idProduct 6860
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable 1
+    stop adbd
+    start adbd
+    setprop sys.usb.state adb
 
 on boot
     write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}

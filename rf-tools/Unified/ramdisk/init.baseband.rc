@@ -11,12 +11,19 @@ on init
     write /sys/class/net/rmnet6/queues/rx-0/rps_cpus 6
     write /sys/class/net/rmnet7/queues/rx-0/rps_cpus 6
 
+    # RIL <-> audioserver comm
+    chmod 0644 /proc/cmdline
+
 on fs
     chown radio system /efs
     chmod 0771 /efs
     chown radio radio sys/devices/virtual/misc/multipdp/waketime
     chmod 0660 /sys/devices/virtual/misc/umts_dm0/dm_state
     chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
+
+    # /efs/factory.prop for Dual / Single SIM settings
+    chown radio radio /efs/factory.prop
+    chmod 0600 /efs/factory.prop
 
 on property:ril.clatd.v4-rmnet0=up
     write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 4
