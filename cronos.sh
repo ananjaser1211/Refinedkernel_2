@@ -1,5 +1,5 @@
 #!/bin/bash
-# Cronos Kernel for Exynos 7870
+# Cronos Kernel for Exynos 7870 AOSP
 # Coded by Ananjaser1211/BlackMesa
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
