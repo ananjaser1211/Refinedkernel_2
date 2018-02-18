@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Kernel Variables
-CR_VERSION=v2.6
+CR_VERSION=AOSP_v1.0
 CR_DATE=$(date +%Y%m%d)
 # CR_TC_GCC=/home/elite/android/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 CR_TC_UB=/home/elite/android/toolchain/ubertc-aarch64-4.9/bin/aarch64-linux-android-
@@ -28,9 +28,9 @@ CR_RAMDISK=$CR_DIR/rf-tools/Unified
 CR_KERNEL=$CR_DIR/arch/arm64/boot/Image
 CR_DTB=$CR_DIR/boot.img-dtb
 # Device specific Variables
-CR_DTSFILES="exynos7870-j5y17lte_eur_open_00.dtb exynos7870-j5y17lte_eur_open_01.dtb exynos7870-j5y17lte_eur_open_02.dtb exynos7870-j5y17lte_eur_open_03.dtb exynos7870-j5y17lte_eur_open_05.dtb exynos7870-j5y17lte_eur_open_07.dtb"
-CR_CONFG=j5y17lte_01_defconfig
-CR_VARIANT=J530F
+CR_DTSFILES="exynos7870-j7y17lte_eur_open_00.dtb exynos7870-j7y17lte_eur_open_01.dtb exynos7870-j7y17lte_eur_open_02.dtb exynos7870-j7y17lte_eur_open_03.dtb exynos7870-j7y17lte_eur_open_04.dtb exynos7870-j7y17lte_eur_open_05.dtb exynos7870-j7y17lte_eur_open_06.dtb exynos7870-j7y17lte_eur_open_07.dtb"
+CR_CONFG=j7y17lte_eur_open_defconfig
+CR_VARIANT=J730F
 CR_ANDROID=7
 CR_ARCH=arm64
 
