@@ -37,7 +37,7 @@
 			pinctrl-0 = <&fuel_irq>;
 			fuelgauge,fuel_int = <&gpa0 3 0>;
 			fuelgauge,fuel_alert_soc = <1>;
-			fuelgauge,capacity_max = <950>;
+			fuelgauge,capacity_max = <1000>;
 			fuelgauge,capacity_max_margin = <70>;
 			fuelgauge,capacity_min = <0>;
 			fuelgauge,capacity_calculation_type = <28>;
@@ -112,8 +112,8 @@
 		battery,temp_table_data = <900 850 830 800 750 700 650 600 570 550 520 500 470 450 400 350 
 								300 250 200 150 100 70 50 30 20 0 (-10) (-30) (-50) (-100) (-150) (-200)>;
 
-		battery,input_current_limit = <1550 460 460 1550 460 900 1000 460 1000 0 820 820 820 1550 1550 0 0 400 700 1300 300 1000 1550 0 1550 1550 1000 1550 80 1550 1550 1400 1000 1000 820 820>;
-		battery,fast_charging_current = <1775 0 0 1775 460 1200 1000 460 1200 0 1200 1200 1200 1700 1775 0 0 400 700 1300 300 1000 1500 0 1775 1775 1000 1775 80 1775 1000 1400 0 1000 1200 1200>;
+		battery,input_current_limit = <1800 500 500 1800 500 900 2000 450 1000 450 900 900 900 1900 1800 450 450 400 700 2000 300 1000 1750 450 1650 2100 1000 1650 80 1800 1650 1400 1000 1000 700 900 900 900 500 1800 1600 3000>;
+		battery,fast_charging_current = <2100 500 500 2100 800 1200 1500 450 1200 450 2100 2100 2100 1600 2100 450 450 400 700 1300 300 1000 1500 450 2600 3500 1000 3000 80 1800 1000 1400 450 1000 2100 2100 2100 2100 450 3000 3000 3000>;
 		battery,full_check_current_1st = <250 0 0 250 250 250 250 250 250 0 250 250 250 250 250 0 0 250 250 250 250 250 250 0 250 250 250 250 0 250 250 250 0 250 250 250>;
 		battery,full_check_current_2nd = <100 0 0 100 100 100 100 100 100 0 100 100 100 100 100 0 0 100 100 100 100 100 100 0 100 100 100 100 0 100 100 100 0 100 100 100>;
 
@@ -121,11 +121,11 @@
 		battery,inbat_voltage = <1>;
 
 		battery,inbat_voltage_table_adc = <2844 2815 2786 2756 2729 2697 2677 2646 2616 2586
-						2557 2526 2498 2468 2440 2417 2387 2358 2327 2300
-						2269 2240 2211 2183 2158 2128 2100 2070>;
-		battery,inbat_voltage_table_data = <4350 4300 4250 4200 4150 4100 4050 4000 3950 3900
-						3850 3800 3750 3700 3650 3600 3550 3500 3450 3400
-						3350 3300 3250 3200 3150 3100 3050 3000>;
+						2557 2526 2498 2469 2442 2417 2390 2362 2333 2303
+						2275 2240 2211 2183 2158 2128 2100 2070>;
+		battery,inbat_voltage_table_data = <4350 4300 4250 4205 4155 4105 4055 4005 3955 3905
+						3855 3805 3755 3705 3655 3605 3555 3505 3455 3405
+						3355 3305 3255 3205 3155 3105 3055 3005>;
 
 		battery,adc_check_count = <5>;
 
@@ -136,6 +136,8 @@
 
 		battery,battery_check_type = <5>; /* SEC_BATTERY_CHECK_CHARGER */
 		battery,check_count = <0>;
+		battery,pre_afc_input_current = <500>;
+		battery,factory_fast_charging_current = <1000>;
 
 		battery,ovp_uvlo_check_type = <3>; /* SEC_BATTERY_OVP_UVLO_CHGPOLLING */
 
@@ -202,16 +204,16 @@
 		battery,swelling_low_temp_recov = <150>;
 		battery,swelling_low_temp_additional = <50>;
 		battery,swelling_low_temp_additional_current = <650>;	/* 0.2C */
-		battery,swelling_low_temp_current = <700>;
+		battery,swelling_low_temp_current = <900>;
 		battery,swelling_low_temp_topoff = <150>;
-		battery,swelling_high_temp_current = <1050>;
+		battery,swelling_high_temp_current = <1250>;
 		battery,swelling_high_temp_topoff = <150>;
 		battery,swelling_drop_float_voltage = <4150>;
 		battery,swelling_high_rechg_voltage = <4100>;
 		battery,swelling_low_rechg_voltage = <4000>;
 
-		battery,siop_input_limit_current = <1550>;
-		battery,siop_charging_limit_current = <1000>;
+		battery,siop_input_limit_current = <2200>;
+		battery,siop_charging_limit_current = <2200>;
 
 		io-channels = <&exynos_adc 1>,<&exynos_adc 3>;
 		io-channel-names = "adc-temp","adc-in-bat";
