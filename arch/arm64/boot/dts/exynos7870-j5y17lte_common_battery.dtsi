@@ -112,7 +112,7 @@
 		battery,temp_table_data = <900 850 830 800 750 700 650 600 570 550 520 500 470 450 400 350 
 								300 250 200 150 100 70 50 30 20 0 (-10) (-30) (-50) (-100) (-150) (-200)>;
 
-		battery,input_current_limit = <1800 500 500 1800 500 900 2000 450 1000 450 900 900 900 1900 1800 450 450 400 700 2000 300 1000 1750 450 1650 2100 1000 1650 80 1800 1650 1400 1000 1000 700 900 900 900 500 1800 1600 3000>;
+		battery,input_current_limit = <2100 500 500 2100 500 900 2100 450 1000 450 900 900 900 2100 2100 450 450 400 700 2100 300 1000 2100 450 1650 2100 1000 2100 80 2100 2100 1400 1000 1000 700 900 900 900 500 2100 1600 3000>;
 		battery,fast_charging_current = <2100 500 500 2100 800 1200 1500 450 1200 450 2100 2100 2100 1600 2100 450 450 400 700 1300 300 1000 1500 450 2600 3500 1000 3000 80 1800 1000 1400 450 1000 2100 2100 2100 2100 450 3000 3000 3000>;
 		battery,full_check_current_1st = <250 0 0 250 250 250 250 250 250 0 250 250 250 250 250 0 0 250 250 250 250 250 250 0 250 250 250 250 0 250 250 250 0 250 250 250>;
 		battery,full_check_current_2nd = <100 0 0 100 100 100 100 100 100 0 100 100 100 100 100 0 0 100 100 100 100 100 100 0 100 100 100 100 0 100 100 100 0 100 100 100>;
@@ -122,8 +122,8 @@
 
 		battery,inbat_voltage_table_adc = <2844 2815 2786 2756 2729 2697 2677 2646 2616 2586
 						2557 2526 2498 2469 2442 2417 2390 2362 2333 2303
-						2275 2240 2211 2183 2158 2128 2100 2070>;
-		battery,inbat_voltage_table_data = <4350 4300 4250 4205 4155 4105 4055 4005 3955 3905
+						2275 2245 2216 2188 2163 2133 2105 2075>;
+		battery,inbat_voltage_table_data = <4350 4305 4255 4205 4155 4105 4055 4005 3955 3905
 						3855 3805 3755 3705 3655 3605 3555 3505 3455 3405
 						3355 3305 3255 3205 3155 3105 3055 3005>;
 
@@ -136,8 +136,6 @@
 
 		battery,battery_check_type = <5>; /* SEC_BATTERY_CHECK_CHARGER */
 		battery,check_count = <0>;
-		battery,pre_afc_input_current = <500>;
-		battery,factory_fast_charging_current = <1000>;
 
 		battery,ovp_uvlo_check_type = <3>; /* SEC_BATTERY_OVP_UVLO_CHGPOLLING */
 
@@ -212,8 +210,8 @@
 		battery,swelling_high_rechg_voltage = <4100>;
 		battery,swelling_low_rechg_voltage = <4000>;
 
-		battery,siop_input_limit_current = <2200>;
-		battery,siop_charging_limit_current = <2200>;
+		battery,siop_input_limit_current = <2100>;
+		battery,siop_charging_limit_current = <2100>;
 
 		io-channels = <&exynos_adc 1>,<&exynos_adc 3>;
 		io-channel-names = "adc-temp","adc-in-bat";
