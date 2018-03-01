@@ -122,7 +122,7 @@
 
 		battery,inbat_voltage_table_adc = <2844 2815 2786 2756 2729 2701 2680 2654 2628 2597
 						2565 2536 2509 2478 2450 2426 2401 2372 2343 2321 2290>;
-		battery,inbat_voltage_table_data = <4380 4352 4306 4253 4204 4152 4101 4053 4002 3954
+		battery,inbat_voltage_table_data = <4350 4352 4306 4253 4204 4152 4101 4053 4002 3954
 						3903 3852 3801 3750 3702 3654 3601 3552 3503 3456 3402>;
 
 		battery,adc_check_count = <5>;
@@ -179,7 +179,7 @@
 		battery,recharging_total_time = <5400>;
 		battery,charging_reset_time = <0>;
 
-		battery,chg_float_voltage = <4380>;
+		battery,chg_float_voltage = <4350>;
 
 		battery,self_discharging_en;
 		battery,force_discharging_limit = <650>;
