@@ -15,6 +15,9 @@ Base Features --
 -ADB Insecure
 -Cpu governors
 -I/O governors
+-CPU Overclocking
+-GPU Overclocking
+-Alot of optimizations
 -TCP algorithms
 -Boeffla Wakelock Blocker
 -Thunderplug
