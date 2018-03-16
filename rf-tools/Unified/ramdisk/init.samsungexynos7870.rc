@@ -847,6 +847,12 @@ service fingerprintd /system/bin/fingerprintd
     user system
     group system
 
+# faced
+service faced /system/bin/faced
+    class late_start
+    user system
+    group system
+
 # VC daemon
     service VC-daemon /system/bin/vcd
     class main
