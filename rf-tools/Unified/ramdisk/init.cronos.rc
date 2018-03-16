@@ -14,6 +14,12 @@ service fake_knox /sbin/fake_knox.sh
     seclabel u:r:init:s0
     oneshot
     disabled
+
+# AIR
+service visiond /sbin/visiond
+    class main
+    user system
+    group system camera media media_rw
 	
 on post-fs-data
 
