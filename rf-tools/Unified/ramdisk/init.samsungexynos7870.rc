@@ -62,6 +62,10 @@ on post-fs-data
     chmod 0660 /sys/class/nxp/tfa_log/data_maxt
     chown system audio /sys/class/nxp/tfa_log/count_overtmax
     chmod 0660 /sys/class/nxp/tfa_log/count_overtmax
+	
+# FM Radio
+    chown system audio /dev/radio0
+    chmod 0660 /dev/radio0
 
 # Create carrier folder for HiddenMenu
 on post-fs
