@@ -279,6 +279,7 @@ application_policy                          u:object_r:EDM_Policy_service:s0
 apppermission_control_policy                u:object_r:EDM_Policy_service:s0
 AAS                                         u:object_r:AAS_service:s0
 ABTPersistenceService                       u:object_r:abt_persistence_service:s0
+android.samsung.IRemosaicDaemon             u:object_r:remosaicd_service:s0
 AODManagerService                           u:object_r:aod_manager_service:s0
 ApexService                                 u:object_r:apexserver_service:s0
 barbeam                                     u:object_r:barbeam_service:s0
@@ -577,6 +578,7 @@ directpeninputmanagerservicerestricted      u:object_r:directpeninputmanager_ser
 directpeninputmanagerservicerestricted[0-9] u:object_r:directpeninputmanager_service:s0
 directpeninputmanagerservicerestricted10    u:object_r:directpeninputmanager_service:s0
 WlanDutService                              u:object_r:wlandutservice_service:s0
+TigerSskdsService                           u:object_r:TigerSskdsService_service:s0
 SCPMHelper                                  u:object_r:scpmhelper_service:s0
 #line 1 "out/target/product/j5y17lte/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
