@@ -15,6 +15,7 @@ on post-fs-data
     mkdir /data/misc/wifi/log/ 0770 wifi system
     mkdir /data/media/wifi/ 0770 wifi system
     mkdir /data/media/wifi/log/ 0770 wifi system
+    mkdir /data/log/wifi/ 0770 wifi log
     mkdir /data/misc/dhcp 0775 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
 
@@ -36,7 +37,7 @@ on post-fs-data
     # for WIFI Antenna
     write /data/misc/conn/.wificable.info E
     chown system root /data/misc/conn/.wificable.info
-    chmod 0666 /data/misc/conn/.wificable.info
+    chmod 0640 /data/misc/conn/.wificable.info
 
     # for WIFI MEMDUMP
     write /data/misc/conn/.memdump.info 0
@@ -57,6 +58,11 @@ on post-fs-data
     mkdir /efs/wifi 0775 radio system
     chown system wifi /efs/wifi/.mac.info
     chmod 0660 /efs/wifi/.mac.info
+    
+    # for WIFI hotspot
+    write /data/misc/conn/.softap.info 0
+    chown system root /data/misc/conn/.softap.info
+    chmod 0640 /data/misc/conn/.softap.info
 
 on boot
     setprop wifi.interface wlan0
