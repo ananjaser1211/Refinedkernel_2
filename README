@@ -1,7 +1,5 @@
 ## RefinedKernel for the Galaxy J5/J7 Pro (2017)
 
-E.O.L - Moved to V3 in a new Repo.
-
 Built with J530FXXU1AQI3 Source
 
 Current supported variants --
@@ -24,17 +22,20 @@ Base Features --
 -Boeffla Wakelock Blocker
 -Thunderplug
 -UKSM
+-WireGuard
+-PowerSuspend
 -Bunch other stuff....
 
 
 How to compile --
 
 Setup your toolchain in build scripts
-Adjust your paths
 
-#Build as root needed
+./cronos.sh = J530F/G
+./cronosy.sh = J530Y/YM
+./cronosm.sh = J530GM/FM
+./cronosj7.sh = J730F
 
-sudo ./build_j530f.sh to compile J530F/GM variant
-sudo ./build_j530m.sh to compile J530G/FM/Y/YM
+Later will be in one case script.
 
 Output @Rf-tools/out
