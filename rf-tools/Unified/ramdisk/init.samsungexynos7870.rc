@@ -52,24 +52,6 @@ on post-fs-data
 # Audio I2C node for TFA amp
     chmod 0660 /dev/i2c-20
     chown audio audio /dev/i2c-20
-    chown system audio /sys/class/nxp/tfa_log/data
-    chmod 0660 /sys/class/nxp/tfa_log/data
-    chown system audio /sys/class/nxp/tfa_log/data_maxx
-    chmod 0660 /sys/class/nxp/tfa_log/data_maxx
-    chown system audio /sys/class/nxp/tfa_log/count_overxmax
-    chmod 0660 /sys/class/nxp/tfa_log/count_overxmax
-    chown system audio /sys/class/nxp/tfa_log/data_maxt
-    chmod 0660 /sys/class/nxp/tfa_log/data_maxt
-    chown system audio /sys/class/nxp/tfa_log/count_overtmax
-    chmod 0660 /sys/class/nxp/tfa_log/count_overtmax
-	
-# FM Radio
-    chown system audio /dev/radio0
-    chmod 0660 /dev/radio0
-
-# Create carrier folder for HiddenMenu
-on post-fs
-     mkdir /efs/carrier 0755 system system
 
 on boot
     # override init.rc to keep plenty of large order chunks around
