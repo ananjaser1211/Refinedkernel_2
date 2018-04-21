@@ -30,7 +30,7 @@ CR_DTB=$CR_DIR/boot.img-dtb
 # Device specific Variables
 CR_DTSFILES="exynos7870-j5y17lte_eur_openm_00.dtb exynos7870-j5y17lte_eur_openm_01.dtb exynos7870-j5y17lte_eur_openm_02.dtb exynos7870-j5y17lte_eur_openm_03.dtb exynos7870-j5y17lte_eur_openm_05.dtb exynos7870-j5y17lte_eur_openm_07.dtb"
 CR_CONFG=j5y17lte_eur_openm_defconfig
-CR_VARIANT=J530Y/YM
+CR_VARIANT=J530Y-YM
 CR_ANDROID=7
 CR_ARCH=arm64
 

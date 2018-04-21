@@ -6947,4 +6947,6 @@ net/ipv4/udp_tunnel.o
 net/ipv6/.ip6_udp_tunnel.o.cmd
 net/ipv6/ip6_udp_tunnel.o
 *.patch
+drivers/nfc/.ese_p3.o.cmd
+drivers/nfc/ese_p3.o
 
