@@ -792,6 +792,12 @@ service gpsd /system/bin/gpsd
     ioprio be 0
     seclabel u:r:gpsd:s0
 
+# SENSOR FRAMEWORK : starts fingerprintService for viper2 non-tz
+service vcsFPService /system/bin/vcsFPService
+    class late_start
+    user system
+    group system
+
 # LPM
 service lpm /system/bin/lpm
     class sec-charger
