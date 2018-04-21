@@ -6940,4 +6940,11 @@ firmware/tsp_melfas/mms438_j7x_hd.fw.gen.o
 firmware/tsp_melfas/mms438_j7y17.fw
 firmware/tsp_melfas/mms438_j7y17.fw.gen.S
 firmware/tsp_melfas/mms438_j7y17.fw.gen.o
+net/ipv4/.udp_tunnel.o.cmd
+net/ipv4/netfilter/.ipt_rpfilter.o.cmd
+net/ipv4/netfilter/ipt_rpfilter.o
+net/ipv4/udp_tunnel.o
+net/ipv6/.ip6_udp_tunnel.o.cmd
+net/ipv6/ip6_udp_tunnel.o
+*.patch
 
