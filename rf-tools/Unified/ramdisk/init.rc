@@ -1303,25 +1303,25 @@ on boot
 
 # UFS
     chown system system /sys/block/sda/device/model
-    chmod 444 /sys/block/sda/device/model
+    chmod 660 /sys/block/sda/device/model
     chown system system /sys/block/sda/device/rev
-    chmod 444 /sys/block/sda/device/rev
+    chmod 660 /sys/block/sda/device/rev
     chown system system /sys/class/scsi_host/host0/lt
-    chmod 444 /sys/class/scsi_host/host0/lt
+    chmod 660 /sys/class/scsi_host/host0/lt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_err_sum
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_err_sum
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_err_sum
     chown system system /sys/class/scsi_host/host0/SEC_UFS_op_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_op_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_op_cnt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_query_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_query_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_query_cnt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_uic_cmd_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_uic_cmd_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_uic_cmd_cnt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_uic_err_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_uic_err_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_uic_err_cnt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_utp_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_utp_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_utp_cnt
     chown system system /sys/class/scsi_host/host0/SEC_UFS_fatal_cnt
-    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_fatal_cnt
+    chmod 660 /sys/class/scsi_host/host0/SEC_UFS_fatal_cnt
     chown system system /sys/block/sda/diskios
     chmod 660 /sys/block/sda/diskios
 
