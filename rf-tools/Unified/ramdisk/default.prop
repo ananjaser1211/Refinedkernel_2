@@ -33,8 +33,8 @@ debug.atrace.tags.enableflags=0
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Fri Feb 2 15:05:49 KST 2018
-ro.bootimage.build.date.utc=1517551549
+ro.bootimage.build.date=Mon Apr 9 14:27:03 KST 2018
+ro.bootimage.build.date.utc=1523251623
 ro.bootimage.build.fingerprint=samsung/j5y17lte/j5y17lte:7.1.1/NMF26X/A530FXXU1ARB1:user/test-keys
 # Refined Tweaks
 ro.config.tima=0
