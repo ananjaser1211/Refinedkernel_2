@@ -210,6 +210,14 @@ setprop ro.mst.support 1
     chmod 664 /sys/devices/system/sec_os_ctrl/migrate_os
 
 # Sensors permissions
+# Fingerprint_sensor
+    mkdir /dev/validity 0770 system system
+    chown system radio /sys/class/fingerprint/fingerprint/type_check
+    chown system radio /sys/class/fingerprint/fingerprint/name
+    chown system radio /sys/class/fingerprint/fingerprint/vendor
+    chown system radio /sys/class/fingerprint/fingerprint/adm
+    chown system radio /sys/class/fingerprint/fingerprint/retain_pin
+
 # Accelerometer_sensor
     chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
     chown system radio /sys/class/sensors/accelerometer_sensor/calibration
