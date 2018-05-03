@@ -18,7 +18,7 @@
 CR_VERSION=v2.7-Stable
 CR_DATE=$(date +%Y%m%d)
 # CR_TC_GCC=/home/elite/android/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-CR_TC_UB=/home/elite/android/toolchain/ubertc-aarch64-4.9/bin/aarch64-linux-android-
+CR_TC_UB=/home/ananjaser/Desktop/uberttc/bin/aarch64-linux-android-
 CR_DIR=$(pwd)
 CR_OUT=$CR_DIR/rf-tools/out
 CR_DTS=arch/arm64/boot/dts
