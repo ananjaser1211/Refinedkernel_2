@@ -1,14 +1,14 @@
 ## RefinedKernel for the Galaxy J5/J7 Pro (2017)
 
-Built with J530FXXU1AQI3 Source
+Built with J530FXXU1ARA2 Source
 
 Current supported variants --
 J530F/FM/G/GM/Y/YM
-J730F
+J730F/FM/G/GM
 
 Base Features --
 
--Compiled with UberTC
+-Compiled with UberTC 6
 -Android 7.1.1 Ready
 -Permissive (Fake Enfrocing)
 -Fake Knox
@@ -24,18 +24,25 @@ Base Features --
 -UKSM
 -WireGuard
 -PowerSuspend
+-Fsync/CRC Toggles
+-Governor optimizations
+-GCC6 Support
 -Bunch other stuff....
 
-
+#######################################
 How to compile --
 
-Setup your toolchain in build scripts
+1-Setup your toolchain in build scripts
 
-./cronos.sh = J530F/G
-./cronosy.sh = J530Y/YM
-./cronosm.sh = J530GM/FM
-./cronosj7.sh = J730F
+I.e : https://bitbucket.org/UBERTC/aarch64-linux-android-6.0-kernel
 
-Later will be in one case script.
+2-Install CCACHE if you dont have it
+
+$ sudo apt-get install ccache
+
+3-Run the build script and select your model
+
+$ cronos.sh
 
 Output @Rf-tools/out
+#######################################
