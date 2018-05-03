@@ -26,7 +26,7 @@ CR_RAMDISK=$CR_DIR/rf-tools/Unified
 CR_KERNEL=$CR_DIR/arch/arm64/boot/Image
 CR_DTB=$CR_DIR/boot.img-dtb
 # Kernel Variables
-CR_VERSION=v2.7-Stable
+CR_VERSION=v2.8-Stable
 CR_NAME=Refined_Kernel
 CR_JOBS=5
 CR_ANDROID=7
