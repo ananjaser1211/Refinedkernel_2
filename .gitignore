@@ -6951,4 +6951,19 @@ net/ipv6/ip6_udp_tunnel.o
 *.patch
 drivers/nfc/.ese_p3.o.cmd
 drivers/nfc/ese_p3.o
+drivers/staging/android/.binder_alloc.o.cmd
+drivers/staging/android/.timed_gpio.o.cmd
+drivers/staging/android/binder_alloc.o
+drivers/staging/android/timed_gpio.o
+kernel/.system_certificates.o.cmd
+kernel/.system_keyring.o.cmd
+kernel/.x509.list
+kernel/.x509_certificate_list.cmd
+kernel/sched/.stats.o.cmd
+kernel/sched/stats.o
+kernel/system_certificates.o
+kernel/system_keyring.o
+kernel/time/.timer_stats.o.cmd
+kernel/time/timer_stats.o
+kernel/x509_certificate_list
 
