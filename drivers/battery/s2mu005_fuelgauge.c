@@ -399,6 +399,7 @@ static void s2mu005_reset_fg(struct s2mu005_fuelgauge_data *fuelgauge)
 static void s2mu005_restart_gauging(struct s2mu005_fuelgauge_data *fuelgauge)
 {
 	u8 temp=0, temp_REG26=0, temp_REG27=0;
+	u8 data[2], r_data[2];
 	pr_info("%s: Re-calculate SOC and voltage\n", __func__);
 
 	s2mu005_read_reg_byte(fuelgauge->i2c, 0x27, &temp_REG27);
@@ -409,11 +410,27 @@ static void s2mu005_restart_gauging(struct s2mu005_fuelgauge_data *fuelgauge)
 	s2mu005_read_reg_byte(fuelgauge->i2c, 0x26, &temp_REG26);
 	s2mu005_write_reg_byte(fuelgauge->i2c, 0x26, 0xFF);
 
+	s2mu005_read_reg(fuelgauge->i2c, S2MU005_REG_IRQ, data);
+	pr_info("%s: irq_reg data (%02x%02x)  \n",__func__, data[1], data[0]);
+
+	/* store data for interrupt mask */
+	r_data[0] = data[0];
+	r_data[1] = data[1];
+	/* disable irq for unwanted interrupt */
+	data[1] |= 0x0f;
+	s2mu005_write_reg(fuelgauge->i2c, S2MU005_REG_IRQ, data);
+
+	/* restart gauge */
+
 	//s2mu005_write_reg_byte(fuelgauge->i2c, 0x1f, 0x01);
 	s2mu005_write_reg_byte(fuelgauge->i2c, 0x21, 0x13);
 	s2mu005_write_reg_byte(fuelgauge->i2c, 0x1E, 0x0F);
 
 	msleep(200);
+
+	/* enable irq after reset */
+	s2mu005_write_reg(fuelgauge->i2c, S2MU005_REG_IRQ, r_data);
+	pr_info("%s: re-store irq_reg data (%02x%02x) \n",__func__, r_data[1], r_data[0]);
 
 	s2mu005_write_reg_byte(fuelgauge->i2c, 0x27, temp_REG27);
 	s2mu005_write_reg_byte(fuelgauge->i2c, 0x26, temp_REG26);
@@ -1225,6 +1242,8 @@ bool s2mu005_fuelgauge_fuelalert_init(struct i2c_client *client, int soc)
 	struct s2mu005_fuelgauge_data *fuelgauge = i2c_get_clientdata(client);
 	u8 data[2];
 
+	fuelgauge->is_fuel_alerted = false;
+
 	/* 1. Set s2mu005 alert configuration. */
 	s2mu005_alert_init(fuelgauge);
 
@@ -1512,6 +1531,7 @@ static void s2mu005_fg_isr_work(struct work_struct *work)
 	}
 
 	if (!fg_alert_status) {
+		fuelgauge->is_fuel_alerted = false;
 		pr_info("%s : SOC or Volage is Good!\n", __func__);
 		wake_unlock(&fuelgauge->fuel_alert_wake_lock);
 	}
@@ -1525,8 +1545,13 @@ static irqreturn_t s2mu005_fg_irq_thread(int irq, void *irq_data)
 	s2mu005_read_reg_byte(fuelgauge->i2c, S2MU005_REG_IRQ, &fg_irq);
 	dev_info(&fuelgauge->i2c->dev, "%s: fg_irq(0x%x)\n",
 		__func__, fg_irq);
-	wake_lock(&fuelgauge->fuel_alert_wake_lock);
-	schedule_delayed_work(&fuelgauge->isr_work, 0);
+	if (fuelgauge->is_fuel_alerted) {
+		return IRQ_HANDLED;
+	} else {
+		wake_lock(&fuelgauge->fuel_alert_wake_lock);
+		fuelgauge->is_fuel_alerted = true;
+		schedule_delayed_work(&fuelgauge->isr_work, 0);
+	}
 
 	return IRQ_HANDLED;
 }
@@ -1780,6 +1805,7 @@ static int s2mu005_fuelgauge_probe(struct i2c_client *client,
 		goto err_data_free;
 	}
 
+	fuelgauge->is_fuel_alerted = false;
 	if (fuelgauge->pdata->fuel_alert_soc >= 0) {
 		s2mu005_fuelgauge_fuelalert_init(fuelgauge->i2c,
 					fuelgauge->pdata->fuel_alert_soc);

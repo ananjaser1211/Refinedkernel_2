@@ -85,6 +85,12 @@ static struct tee_object *tee_object_alloc(bool is_sp_trustlet, size_t length)
 		size += header_length + 3 * MAX_SO_CONT_SIZE;
 	}
 
+    /* Check size for overflow */
+    if (size < length) {
+        mc_dev_err("cannot allocate object of size %zu", length);
+        return NULL;
+    }
+
 	/* Allocate memory */
 	obj = vzalloc(size);
 	if (!obj)
@@ -413,6 +419,10 @@ end:
 static void mc_admin_sendcrashdump(void)
 {
 	int ret = 0;
+
+	/* ExySp: to be updated in official release */
+	/* Prevent daemon reconnection */
+	admin_ctx.last_start_ret = -EHOSTUNREACH;
 
 	/* Lock communication channel */
 	mutex_lock(&g_request.mutex);

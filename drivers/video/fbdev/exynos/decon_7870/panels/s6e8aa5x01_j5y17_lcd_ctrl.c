@@ -851,41 +851,33 @@ static int s6e8aa5x01_exit(struct lcd_info *lcd)
 
 #ifdef CONFIG_DISPLAY_USE_INFO
 	u8 buf;
-	u8 esd_err = 0;
 #endif
 
 	dev_info(&lcd->ld->dev, "%s\n", __func__);
 
 #ifdef CONFIG_DISPLAY_USE_INFO
-	DSI_WRITE(SEQ_TEST_KEY_ON_F0, ARRAY_SIZE(SEQ_TEST_KEY_ON_F0));
-	DSI_WRITE(SEQ_VLIN1_MONITOR_ON, ARRAY_SIZE(SEQ_VLIN1_MONITOR_ON));
+/*
+* ESD_ERROR[6] = VLIN1 error is occurred by ESD = 0x40
+* ESD_ERROR[5] = Internal HSYNC error is occurred by ESD 
+* ESD_ERROR[4] = CHECK_SUM error is occurred by ESD 
+* ESD_ERROR[3] = ELVDD error is occurred by ESD = 0x08
+* ESD_ERROR[2] = VLIN3 error is occurred by ESD = 0x04
+* ESD_ERROR[1] = HS CLK lane error is occurred by ESD 
+* ESD_ERROR[0] = MIPI DSI error is occurred by ESD
+*/
 	ret = s6e8aa5x01_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
 	if (ret < 0) {
 		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
 		goto dpui_skip;
 	}
-	inc_dpui_u32_field(DPUI_KEY_PNVLI1E, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	
+	inc_dpui_u32_field(DPUI_KEY_PNVLI1E, !!(buf & 0x40));
 
-	DSI_WRITE(SEQ_ELVDD_MONITOR_ON, ARRAY_SIZE(SEQ_ELVDD_MONITOR_ON));
-	ret = s6e8aa5x01_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
-	if (ret < 0) {
-		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
-		goto dpui_skip;
-	}
-	inc_dpui_u32_field(DPUI_KEY_PNELVDE, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	inc_dpui_u32_field(DPUI_KEY_PNELVDE, !!(buf & 0x08));
 
-	DSI_WRITE(SEQ_VLOUT3_MONITOR_ON, ARRAY_SIZE(SEQ_VLOUT3_MONITOR_ON));
-	ret = s6e8aa5x01_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
-	if (ret < 0) {
-		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
-		goto dpui_skip;
-	}
-	inc_dpui_u32_field(DPUI_KEY_PNVLO3E, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	inc_dpui_u32_field(DPUI_KEY_PNVLO3E, !!(buf & 0x04));
 
-	inc_dpui_u32_field(DPUI_KEY_PNESDE, esd_err != 0 ? 1 : 0);
+	inc_dpui_u32_field(DPUI_KEY_PNESDE, !!(buf & 0x4C));
 
 	ret = s6e8aa5x01_read_info(lcd, ERR_RDNUMED_REG, sizeof(buf), &buf);
 	if (ret < 0) {
@@ -962,11 +954,13 @@ static int s6e8aa5x01_init(struct lcd_info *lcd)
 	msleep(120);
 
 #ifdef CONFIG_DISPLAY_USE_INFO
+	DSI_WRITE(SEQ_ESD_MONITOR_ON, ARRAY_SIZE(SEQ_ESD_MONITOR_ON));
+
 	ret = s6e8aa5x01_read_info(lcd, ERR_RDDSDR_REG, sizeof(buf), &buf);
 	if (ret < 0) {
 		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
 	}
-	inc_dpui_u32_field(DPUI_KEY_PNSDRE, buf&0x80 ? 1 : 0);
+	inc_dpui_u32_field(DPUI_KEY_PNSDRE, buf&0x80 ? 0 : 1);
 #endif
 
 	/* Test Key Disable */

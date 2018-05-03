@@ -1,5 +1,5 @@
 obj-$(CONFIG_EXYNOS_DECON_LCD) += dsim_panel.o
-obj-$(CONFIG_EXYNOS_DECON_MDNIE_LITE) += mdnie_lite.o mdnie_tuning.o
+obj-$(CONFIG_EXYNOS_DECON_MDNIE_LITE) += mdnie_lite.o
 obj-$(CONFIG_DISPLAY_USE_INFO) += dpui.o
 
 obj-$(CONFIG_PANEL_EA8064G_DYNAMIC) += ea8064g_lcd_ctrl.o dimming_core.o

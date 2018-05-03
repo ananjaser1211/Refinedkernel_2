@@ -123,6 +123,17 @@ static const unsigned char SEQ_AVC_SETTING_2[] = {
 	0xB2
 };
 
+static const unsigned char SEQ_ELVSSTEMPSET_1[] = {
+	0xB6,
+	0xAC, 0x29
+};
+
+static const unsigned char SEQ_ELVSSTEMPSET_2[] = {
+	0xF5,
+	0x84, 0x33
+};
+
+
 static const unsigned char SEQ_GAMMA_CONDITION_SET[] = {
 	0xCA,
 	0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x80, 0x80, 0x80, 0x80,
@@ -209,37 +220,18 @@ static unsigned char SEQ_TSET_SETTING[] = {
 	0xB8,
 	0x19	/* (ex) 25 degree : 0x19 */
 };
-
-static const unsigned char SEQ_PARTIAL_ON[] = {
-	0x12,
-};
-
-static const unsigned char SEQ_PARTIAL_SETTING[] = {
-	0x30,
-	0x07, 0x7E, 0x07, 0x7F
-};
-static const unsigned char SEC_NORM_MODE_ON[] = {
-	0x13,
-};
 #ifdef CONFIG_DISPLAY_USE_INFO
 
-#define ERR_READ_REG 0xed
+#define ERR_READ_REG 0xee
 #define ERR_RDNUMED_REG 0x05
 #define ERR_RDDSDR_REG 0x0f
 
 /* Write COMMAND before read */
-static const unsigned char SEQ_VLIN1_MONITOR_ON[] = {
-	ERR_READ_REG,
-	0x40,
+static const unsigned char SEQ_ESD_MONITOR_ON[] = {
+	0xED,
+	0x4C,
 };
-static const unsigned char SEQ_ELVDD_MONITOR_ON[] = {
-	ERR_READ_REG,
-	0x08,
-};
-static const unsigned char SEQ_VLOUT3_MONITOR_ON[] = {
-	ERR_READ_REG,
-	0x04,
-};
+
 
 #endif
 

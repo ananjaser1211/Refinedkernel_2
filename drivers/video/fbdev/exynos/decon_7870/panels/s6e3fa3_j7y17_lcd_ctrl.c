@@ -984,41 +984,33 @@ static int s6e3fa3_exit(struct lcd_info *lcd)
 	int ret = 0;
 #ifdef CONFIG_DISPLAY_USE_INFO
 	u8 buf;
-	u8 esd_err = 0;
 #endif
 
 	dev_info(&lcd->ld->dev, "%s\n", __func__);
 
 #ifdef CONFIG_DISPLAY_USE_INFO
-	DSI_WRITE(SEQ_TEST_KEY_ON_F0, ARRAY_SIZE(SEQ_TEST_KEY_ON_F0));
-	DSI_WRITE(SEQ_VLIN1_MONITOR_ON, ARRAY_SIZE(SEQ_VLIN1_MONITOR_ON));
+/*
+* ESD_ERROR[6] =  MIPI DSI error is occurred by ESD.
+* ESD_ERROR[5] =  HS CLK lane error is occurred by ESD.
+* ESD_ERROR[4] =  VLIN3 error is occurred by ESD.
+* ESD_ERROR[3] =  ELVDD error is occurred by ESD.
+* ESD_ERROR[2]  = CHECK_SUM error is occurred by ESD.
+* ESD_ERROR[1] =  HSYNC error is occurred by ESD.
+* ESD_ERROR[0] =  VLIN1 error is occurred by ESD
+*/
 	ret = s6e3fa3_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
 	if (ret < 0) {
 		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
 		goto dpui_skip;
 	}
-	inc_dpui_u32_field(DPUI_KEY_PNVLI1E, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	
+	inc_dpui_u32_field(DPUI_KEY_PNVLI1E, !!(buf & 0x01));
 
-	DSI_WRITE(SEQ_ELVDD_MONITOR_ON, ARRAY_SIZE(SEQ_ELVDD_MONITOR_ON));
-	ret = s6e3fa3_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
-	if (ret < 0) {
-		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
-		goto dpui_skip;
-	}
-	inc_dpui_u32_field(DPUI_KEY_PNELVDE, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	inc_dpui_u32_field(DPUI_KEY_PNELVDE, !!(buf & 0x08));
 
-	DSI_WRITE(SEQ_VLOUT3_MONITOR_ON, ARRAY_SIZE(SEQ_VLOUT3_MONITOR_ON));
-	ret = s6e3fa3_read_info(lcd, ERR_READ_REG, sizeof(buf), &buf);
-	if (ret < 0) {
-		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
-		goto dpui_skip;
-	}
-	inc_dpui_u32_field(DPUI_KEY_PNVLO3E, buf != 0 ? 1 : 0);
-	esd_err |= buf;
+	inc_dpui_u32_field(DPUI_KEY_PNVLO3E, !!(buf & 0x10));
 
-	inc_dpui_u32_field(DPUI_KEY_PNESDE, esd_err != 0 ? 1 : 0);
+	inc_dpui_u32_field(DPUI_KEY_PNESDE, !!(buf & 0x19));
 
 	ret = s6e3fa3_read_info(lcd, ERR_RDNUMED_REG, sizeof(buf), &buf);
 	if (ret < 0) {
@@ -1056,9 +1048,9 @@ static int s6e3fa3_displayon(struct lcd_info *lcd)
 	/* 14. Display On(29h) */
 	DSI_WRITE(SEQ_DISPLAY_ON, ARRAY_SIZE(SEQ_DISPLAY_ON));
 
-	msleep(10);
+	// msleep(10);
 
-	DSI_WRITE(SEC_NORM_MODE_ON, ARRAY_SIZE(SEC_NORM_MODE_ON));
+	// DSI_WRITE(SEC_NORM_MODE_ON, ARRAY_SIZE(SEC_NORM_MODE_ON));
 exit:
 	return ret;
 }
@@ -1072,15 +1064,22 @@ static int s6e3fa3_init(struct lcd_info *lcd)
 
 	dev_info(&lcd->ld->dev, "%s\n", __func__);
 
+	msleep(5);
 	/* 7. Sleep Out(11h) */
 	DSI_WRITE(SEQ_SLEEP_OUT, ARRAY_SIZE(SEQ_SLEEP_OUT));
 
 	/* 8. Wait 20ms */
 	msleep(20);
 
+	/* ELVSS temporary setting*/
+	DSI_WRITE(SEQ_TEST_KEY_ON_F0, ARRAY_SIZE(SEQ_TEST_KEY_ON_F0));
+	DSI_WRITE(SEQ_ELVSSTEMPSET_1, ARRAY_SIZE(SEQ_ELVSSTEMPSET_1));
+	DSI_WRITE(SEQ_ELVSSTEMPSET_2, ARRAY_SIZE(SEQ_ELVSSTEMPSET_2));
+	DSI_WRITE(SEQ_TEST_KEY_OFF_F0, ARRAY_SIZE(SEQ_TEST_KEY_OFF_F0));
+	msleep(40);
 	/* Partial mode on, Partial Area Setting */
-	DSI_WRITE(SEQ_PARTIAL_ON, ARRAY_SIZE(SEQ_PARTIAL_ON));
-	DSI_WRITE(SEQ_PARTIAL_SETTING, ARRAY_SIZE(SEQ_PARTIAL_SETTING));
+	// DSI_WRITE(SEQ_PARTIAL_ON, ARRAY_SIZE(SEQ_PARTIAL_ON));
+	// DSI_WRITE(SEQ_PARTIAL_SETTING, ARRAY_SIZE(SEQ_PARTIAL_SETTING));
 
 	/* 9. ID READ */
 	s6e3fa3_read_id(lcd);
@@ -1106,21 +1105,19 @@ static int s6e3fa3_init(struct lcd_info *lcd)
 	/* 4.1.2 AVC Setting */
 	DSI_WRITE(SEQ_AVC_SETTING_1, ARRAY_SIZE(SEQ_AVC_SETTING_1));
 	DSI_WRITE(SEQ_AVC_SETTING_2, ARRAY_SIZE(SEQ_AVC_SETTING_2));
-
+	msleep(50);
 	dsim_panel_set_brightness(lcd, 1);
 #ifdef CONFIG_DISPLAY_USE_INFO
+	DSI_WRITE(SEQ_ESD_MONITOR_ON, ARRAY_SIZE(SEQ_ESD_MONITOR_ON));
 	ret = s6e3fa3_read_info(lcd, ERR_RDDSDR_REG, sizeof(buf), &buf);
 	if (ret < 0) {
 		dev_err(&lcd->ld->dev, "%s: fail\n", __func__);
 	}
-	inc_dpui_u32_field(DPUI_KEY_PNSDRE, buf&0x80 ? 1 : 0);
+	inc_dpui_u32_field(DPUI_KEY_PNSDRE, buf&0x80 ? 0 : 1);
 #endif
 	/* Test Key Disable */
 	DSI_WRITE(SEQ_TEST_KEY_OFF_F0, ARRAY_SIZE(SEQ_TEST_KEY_OFF_F0));
 	DSI_WRITE(SEQ_TEST_KEY_OFF_FC, ARRAY_SIZE(SEQ_TEST_KEY_OFF_FC));
-
-	/* 12. Wait 80ms */
-	msleep(50);
 
 #ifdef CONFIG_LCD_DOZE_MODE
 	lcd->current_alpm = ALPM_OFF;
@@ -1348,7 +1345,7 @@ static int s6e3fa3_exitalpm(struct lcd_info *lcd)
 
 	DSI_WRITE(SEQ_TEST_KEY_ON_F0, ARRAY_SIZE(SEQ_TEST_KEY_ON_F0));
 	DSI_WRITE(SEQ_TEST_KEY_ON_FC, ARRAY_SIZE(SEQ_TEST_KEY_ON_FC));
-
+	DSI_WRITE(SEQ_ELVSSTEMPSET_1, ARRAY_SIZE(SEQ_ELVSSTEMPSET_1));
 	DSI_WRITE(SEQ_ALPM_OFF, ARRAY_SIZE(SEQ_ALPM_OFF));
 	DSI_WRITE(SEQ_LTPS_EQ_NORMAL, ARRAY_SIZE(SEQ_LTPS_EQ_NORMAL));
 
