@@ -48,10 +48,10 @@
 /dev/video31              0660   media      graphics
 
 # mscalers
-/dev/video50              0660   media      graphics
-/dev/video51              0660   media      graphics
-/dev/m2m1shot_scaler0     0660   cameraserver      cameraserver
-/dev/m2m1shot_scaler1     0660   cameraserver      m2mscaler
+/dev/video50              0666   media      graphics
+/dev/video51              0666   media      graphics
+/dev/m2m1shot_scaler0     0666   cameraserver      graphics
+/dev/m2m1shot_scaler1     0666   cameraserver      graphics
 
 /dev/video55              0666   system     graphics
 /dev/fimg2d               0666   system     graphics
@@ -60,9 +60,9 @@
 
 # mfc
 /dev/video6               0660   mediacodec      mediadrm
-/dev/video7               0660   media      mediadrm
-/dev/video8               0660   media      mediadrm
-/dev/video9               0660   media      mediadrm
+/dev/video7               0660   mediacodec      mediadrm
+/dev/video8               0660   mediacodec      mediadrm
+/dev/video9               0660   mediacodec      mediadrm
 
 # camera
 /dev/video100             0660   cameraserver      cameraserver
@@ -87,24 +87,38 @@
 /dev/video151             0660   cameraserver      cameraserver
 /dev/video152             0660   cameraserver      cameraserver
 /dev/video160             0660   cameraserver      cameraserver
+/dev/video161             0660   cameraserver      cameraserver
+/dev/video170             0660   cameraserver      cameraserver
+/dev/video171             0660   cameraserver      cameraserver
+/dev/video172             0660   cameraserver      cameraserver
+/dev/video173             0660   cameraserver      cameraserver
+/dev/video174             0660   cameraserver      cameraserver
+/dev/video180             0660   cameraserver      cameraserver
 /dev/media2               0660   media      media
 
 # hevc
-/dev/video10              0660   media      media
-/dev/video11              0660   media      media
+/dev/video10              0660   mediacodec mediadrm
+/dev/video11              0660   mediacodec mediadrm
 
 # jpeg
-/dev/video12              0660   media      media
+/dev/video12              0660   cameraserver      media
 
 # audio
 /dev/seiren               0660   system     audio
 
 # MobiCore
-#/dev/mobicore             0600   drmrpc     drmrpc
-#/dev/mobicore-user        0660   drm        drmrpc
+/dev/mobicore             0600   drmrpc     drmrpc
+/dev/mobicore-user        0660   drm        drmrpc
 
 # Secure MEM driver
-#/dev/s5p-smem             0660   drm        drmrpc
+/dev/s5p-smem             0660   drm        drmrpc
+
+# MobiCore
+#/dev/mobicore             0700   system     system
+#/dev/mobicore-user        0666   radio     system
+
+# Secure MEM driver
+#/dev/s5p-smem             0660   system     system
 
 # cbd modem block
 /dev/block/mmcblk0p5     0400  radio   system
@@ -114,7 +128,7 @@
 /dev/umts_router          0660   radio      radio
 
 # SIPC RIL
-/dev/umts_boot0           0660   radio      radio
+/dev/umts_boot0           0666   radio      radio
 /dev/umts_ipc0            0660   radio      radio
 /dev/umts_ipc1            0660   radio      radio
 /dev/umts_rfs0            0660   radio      radio
@@ -122,7 +136,7 @@
 # Modem Interface
 /dev/block/platform/13540000.dwmmc0/by-name/RADIO	0660	system	radio
 /dev/block/platform/13540000.dwmmc0/by-name/CP_DEBUG	0660	radio	system
-/dev/umts*		  0660	system	radio
+/dev/umts*		  0666	system	radio
 /dev/umts_csd		  0660	system	loop_radio
 /dev/smd4                 0660  system  radio
 
@@ -139,9 +153,6 @@
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/input_boost                 0660    system  system
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/boostpulse_duration         0660    system  system
 /sys/devices/system/cpu/cpu*   cpufreq/interactive/io_is_busy                  0660    system  system
-# Vision (VPU, SCORE)
-/dev/vertex0             0660   media      media
-/dev/vertex1             0660   media      media
 
 # sensor sysfs properties
 /sys/devices/virtual/input/input*	poll_delay	0660	system	radio
@@ -156,4 +167,34 @@
 
 # Google FRP solution
 /dev/block/platform/13540000.dwmmc0/by-name/PERSISTENT    0660    system    system
+
+# Reactivation Lock solution
 /dev/block/platform/13540000.dwmmc0/by-name/STEADY    0660    system    system
+
+# from Samsungueventd.rc
+
+# MobiCore
+/dev/mobicore             0700   system     system
+/dev/mobicore-user        0666   radio     system
+
+# Secure MEM driver
+/dev/s5p-smem             0660   system     system
+
+# sensorhub
+/dev/ssp_sensorhub        0660   system     system
+/dev/ssp_data_injection   0660   system     system
+
+# Fingerprint Sensor
+/dev/vfsspi        0660   system     system
+/dev/esfp0         0660   system     system
+
+# sensor sysfs properties
+/sys/devices/virtual/input/input*	poll_delay	0660	system	radio
+/sys/devices/virtual/input/input*	enable		0660	system	radio
+
+# Sensorhub IIO
+/dev/ssp_sensorhub        0660   system		system
+/dev/iio:device*          0660   system		system
+/sys/devices/13930000.spi/spi_master/spi2/spi2.0/iio:device*    buffer/enable       0660    system    system
+/sys/devices/13930000.spi/spi_master/spi2/spi2.0/iio:device*    buffer/length       0660    system    system
+/sys/bus/iio/devices/iio:device*    0664   system     radio

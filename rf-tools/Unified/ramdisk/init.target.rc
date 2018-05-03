@@ -1,0 +1,299 @@
+on boot
+
+# NFC
+    mkdir /data/nfc 0700 nfc nfc
+    mkdir /data/nfc/param 0700 nfc nfc
+
+# Permissions for NFC
+    chmod 0660 /dev/sec-nfc
+    chown nfc nfc /dev/sec-nfc
+
+# EFS section for NFC Resonant Frequency
+    mkdir /efs/sec_efs/nfc 0700 nfc nfc
+
+# Audio I2C node for TFA amp
+    chmod 0660 /dev/i2c-20
+    chown audio audio /dev/i2c-20
+
+# Permissions for Bluetooth.
+    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
+    chown bluetooth bluetooth ro.bt.bdaddr_path
+    chown radio bluetooth /efs/bluetooth/bt_addr
+    chmod 0640 /efs/bluetooth/bt_addr
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/device/extldo
+
+    chown bluetooth net_bt /dev/ttySAC0
+    chmod 0660 /dev/ttySAC0
+
+# Permissions for Camera
+    mkdir /data/camera 0770 media system
+    chown system radio /sys/class/camera/rear/rear_camfw
+    chown system radio /sys/class/camera/rear/rear_camfw_full
+    chown system radio /sys/class/camera/rear/rear_checkfw_user
+    chown system radio /sys/class/camera/rear/rear_checkfw_factory
+    chown system radio /sys/class/camera/rear/rear_sensor_standby
+    chown system radio /sys/class/camera/rear/rear_camtype
+    chown system radio /sys/class/camera/rear/rear_calcheck
+    chown system radio /sys/class/camera/rear/rear_caminfo
+    chown system radio /sys/class/camera/rear/rear_sensorid
+    chown system radio /sys/class/camera/rear/rear_moduleid
+    chown system radio /sys/class/camera/flash/rear_flash
+    chown system radio /sys/class/camera/flash/front_flash
+    chown cameraserver system /sys/class/camera/flash/rear_torch_flash
+    chown cameraserver system /sys/class/camera/flash/front_torch_flash
+    chown system radio /sys/class/camera/front/front_camfw
+    chown system radio /sys/class/camera/front/front_camfw_full
+    chown system radio /sys/class/camera/front/front_checkfw_factory
+    chown system radio /sys/class/camera/front/front_camtype
+    chown system radio /sys/class/camera/front/front_caminfo
+    chown system radio /sys/class/camera/front/front_sensorid
+    chown system radio /sys/class/camera/ois/selftest
+    chown system radio /sys/class/camera/ois/ois_power
+    chown system radio /sys/class/camera/ois/ois_rawdata
+    chown system radio /sys/class/camera/ois/oisfw
+    chown system radio /sys/class/camera/ois/ois_diff
+    chown system radio /sys/class/camera/ois/fw_update
+    chown system radio /sys/class/camera/ois/ois_exif
+    chown system system /sys/devices/svc/Camera/SVC_rear_module
+    chown system system /sys/devices/svc/Camera/SVC_front_module
+
+# Permissions for Fingerprint_sensor
+    chown system radio /sys/class/fingerprint/fingerprint/type_check
+    chown system radio /sys/class/fingerprint/fingerprint/name
+    chown system radio /sys/class/fingerprint/fingerprint/vendor
+    chown system radio /sys/class/fingerprint/fingerprint/adm
+
+# Permissions for Gyro_sensor
+    chown system radio /sys/class/sensors/gyro_sensor/power_on
+    chown system radio /sys/class/sensors/gyro_sensor/power_off
+    chown system media /sys/class/sensors/gyro_sensor/temperature
+    chown system radio /sys/class/sensors/gyro_sensor/selftest
+    chown system radio /sys/class/sensors/gyro_sensor/selftest_dps
+    chown system radio /sys/class/sensors/gyro_sensor/vendor
+    chown system radio /sys/class/sensors/gyro_sensor/name
+
+# Store Gyro cal data
+    chown system system /efs/FactoryApp/gyro_cal_data
+    chmod 0660 /efs/FactoryApp/gyro_cal_data
+
+# Permissions for LCD
+    chown system radio /sys/class/lcd/panel/lcd_type
+    chown system system /sys/class/lcd/panel/temperature
+    chown system system /sys/class/lcd/panel/lux
+    chown system media_rw /sys/class/lcd/panel/adaptive_control
+    chown system system /sys/class/lcd/panel/dpui
+    chown system system /sys/class/lcd/panel/dpui_dbg
+
+# Permissions for Light_sensor
+    chown system radio /sys/class/sensors/light_sensor/lux
+    chown system radio /sys/class/sensors/light_sensor/raw_data
+    chown system radio /sys/class/sensors/light_sensor/vendor
+    chown system radio /sys/class/sensors/light_sensor/name
+
+# Permissions for Magnetic IIO
+    chown system radio	/sys/bus/iio/devices/iio:device2/buffer
+    chown system radio	/sys/bus/iio/devices/iio:device2/buffer/enable
+    chown system radio	/sys/bus/iio/devices/iio:device2/buffer/length
+    chown system radio	/sys/bus/iio/devices/iio:device2/dev
+    chown system radio	/sys/bus/iio/devices/iio:device2/hard_offset
+    chown system radio	/sys/bus/iio/devices/iio:device2/in_magn_scale
+    chown system radio	/sys/bus/iio/devices/iio:device2/in_magn_x_raw
+    chown system radio	/sys/bus/iio/devices/iio:device2/in_magn_y_raw
+    chown system radio	/sys/bus/iio/devices/iio:device2/in_magn_z_raw
+    chown system radio	/sys/bus/iio/devices/iio:device2/mag_average_sample
+    chown system radio	/sys/bus/iio/devices/iio:device2/name
+    chown system radio	/sys/bus/iio/devices/iio:device2/ouflow_thresh
+    chown system radio	/sys/bus/iio/devices/iio:device2/position
+    chown system radio	/sys/bus/iio/devices/iio:device2/power
+    chown system radio	/sys/bus/iio/devices/iio:device2/power/autosuspend_delay_ms
+    chown system radio	/sys/bus/iio/devices/iio:device2/power/control
+    chown system radio	/sys/bus/iio/devices/iio:device2/power/runtime_active_time
+    chown system radio	/sys/bus/iio/devices/iio:device2/power/runtime_status
+    chown system radio	/sys/bus/iio/devices/iio:device2/power/runtime_suspended_time
+    chown system radio	/sys/bus/iio/devices/iio:device2/sampling_frequency
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_en
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_index
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_type
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_en
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_index
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_type
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_en
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_index
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_type
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_en
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_index
+    chown system radio	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_type
+    chown system radio	/sys/bus/iio/devices/iio:device2/self_test
+    chown system radio	/sys/bus/iio/devices/iio:device2/self_test_noise
+    chown system radio	/sys/bus/iio/devices/iio:device2/static_matrix
+    chown system radio	/sys/bus/iio/devices/iio:device2/trigger
+    chown system radio	/sys/bus/iio/devices/iio:device2/trigger/current_trigger
+    chown system radio	/sys/class/sensors/sensor_dev/flush
+
+    chmod 760	/sys/bus/iio/devices/iio:device2/buffer
+    chmod 760	/sys/bus/iio/devices/iio:device2/buffer/enable
+    chmod 760	/sys/bus/iio/devices/iio:device2/buffer/length
+    chmod 760	/sys/bus/iio/devices/iio:device2/dev
+    chmod 760	/sys/bus/iio/devices/iio:device2/hard_offset
+    chmod 760	/sys/bus/iio/devices/iio:device2/in_magn_scale
+    chmod 760	/sys/bus/iio/devices/iio:device2/in_magn_x_raw
+    chmod 760	/sys/bus/iio/devices/iio:device2/in_magn_y_raw
+    chmod 760	/sys/bus/iio/devices/iio:device2/in_magn_z_raw
+    chmod 760	/sys/bus/iio/devices/iio:device2/mag_average_sample
+    chmod 760	/sys/bus/iio/devices/iio:device2/name
+    chmod 760	/sys/bus/iio/devices/iio:device2/ouflow_thresh
+    chmod 760	/sys/bus/iio/devices/iio:device2/position
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/autosuspend_delay_ms
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/control
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/runtime_active_time
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/runtime_status
+    chmod 760	/sys/bus/iio/devices/iio:device2/power/runtime_suspended_time
+    chmod 760	/sys/bus/iio/devices/iio:device2/sampling_frequency
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_en
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_index
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_x_type
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_en
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_index
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_y_type
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_en
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_index
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_magn_z_type
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_en
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_index
+    chmod 760	/sys/bus/iio/devices/iio:device2/scan_elements/in_timestamp_type
+    chmod 760	/sys/bus/iio/devices/iio:device2/self_test
+    chmod 760	/sys/bus/iio/devices/iio:device2/self_test_noise
+    chmod 760	/sys/bus/iio/devices/iio:device2/static_matrix
+    chmod 760	/sys/bus/iio/devices/iio:device2/trigger
+    chmod 760	/sys/bus/iio/devices/iio:device2/trigger/current_trigger
+    chmod 760	/sys/class/sensors/sensor_dev/flush
+
+# Sensors permissions
+# Accelerometer_sensor
+    chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
+    chown system radio /sys/class/sensors/accelerometer_sensor/calibration
+    chown system radio /sys/class/sensors/accelerometer_sensor/reactive_alert
+    chown system radio /sys/class/sensors/accelerometer_sensor/selftest
+    chown system radio /sys/class/sensors/accelerometer_sensor/vendor
+    chown system radio /sys/class/sensors/accelerometer_sensor/name
+    chown system radio /sys/class/sensors/accelerometer_sensor/dhr_sensor_info
+    chown system system /efs/calibration_data
+    chmod 0666 /efs/calibration_data
+# Proximity_sensor
+    chown system radio /sys/class/sensors/proximity_sensor/state
+    chown system radio /sys/class/sensors/proximity_sensor/raw_data
+    chown system radio /sys/class/sensors/proximity_sensor/prox_avg
+    chown system radio /sys/class/sensors/proximity_sensor/prox_cal
+    chown system radio /sys/class/sensors/proximity_sensor/prox_thresh
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_high
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_low
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_high
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_low
+    chown system radio /sys/class/sensors/proximity_sensor/vendor
+    chown system radio /sys/class/sensors/proximity_sensor/name
+    chown system radio /sys/class/sensors/proximity_sensor/dhr_sensor_info
+# Light_sensor
+    chown system radio /sys/class/sensors/light_sensor/lux
+    chown system radio /sys/class/sensors/light_sensor/raw_data
+    chown system radio /sys/class/sensors/light_sensor/vendor
+    chown system radio /sys/class/sensors/light_sensor/name
+# Gyro_sensor
+    chown system radio /sys/class/sensors/gyro_sensor/power_on
+    chown system radio /sys/class/sensors/gyro_sensor/power_off
+    chown system media /sys/class/sensors/gyro_sensor/temperature
+    chown system radio /sys/class/sensors/gyro_sensor/selftest
+    chown system radio /sys/class/sensors/gyro_sensor/selftest_dps
+    chown system radio /sys/class/sensors/gyro_sensor/vendor
+    chown system radio /sys/class/sensors/gyro_sensor/name
+# Magnetic_sensor
+    chown system radio /sys/class/sensors/magnetic_sensor/selftest
+    chown system radio /sys/class/sensors/magnetic_sensor/raw_data
+    chown system radio /sys/class/sensors/magnetic_sensor/adc
+    chown system radio /sys/class/sensors/magnetic_sensor/vendor
+    chown system radio /sys/class/sensors/magnetic_sensor/name
+    chown system radio /sys/class/sensors/magnetic_sensor/status
+    chown system radio /sys/class/sensors/magnetic_sensor/dhr_sensor_info
+# Grip_sensor
+    chown system radio /sys/class/sensors/grip_sensor/name
+    chown system radio /sys/class/sensors/grip_sensor/vendor
+    chown system radio /sys/class/sensors/grip_sensor/raw_data
+    chown system radio /sys/class/sensors/grip_sensor/threshold
+    chown system radio /sys/class/sensors/grip_sensor/calibration
+    chown system radio /sys/class/sensors/grip_sensor/onoff
+    chown system radio /sys/class/sensors/grip_sensor/reset
+    chown system radio /sys/class/sensors/grip_sensor/mode
+    chown system radio /sys/class/sensors/grip_sensor/gain
+    chown system radio /sys/class/sensors/grip_sensor/start
+    chown system radio /sys/class/sensors/grip_sensor/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor/gain_ch2
+    chown system radio /sys/class/sensors/grip_sensor/raw_data_ch2
+    chown system radio /sys/class/sensors/grip_sensor/diff_avg_ch2
+    chown system radio /sys/class/sensors/grip_sensor/normal_threshold_ch2
+    chown system radio /sys/class/sensors/grip_sensor/ch_state
+    chown system radio /sys/class/sensors/grip_sensor/body_threshold
+    chown system radio /sys/class/sensors/grip_sensor/freq
+    chown system radio /sys/class/sensors/grip_sensor/grip_flush
+    chown system radio /sys/class/sensors/grip_sensor/irq_count
+# Grip_sensor wifi
+    chown system radio /sys/class/sensors/grip_sensor_wifi/name
+    chown system radio /sys/class/sensors/grip_sensor_wifi/vendor
+    chown system radio /sys/class/sensors/grip_sensor_wifi/raw_data
+    chown system radio /sys/class/sensors/grip_sensor_wifi/threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/calibration
+    chown system radio /sys/class/sensors/grip_sensor_wifi/onoff
+    chown system radio /sys/class/sensors/grip_sensor_wifi/reset
+    chown system radio /sys/class/sensors/grip_sensor_wifi/mode
+    chown system radio /sys/class/sensors/grip_sensor_wifi/gain
+    chown system radio /sys/class/sensors/grip_sensor_wifi/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/freq
+# MPL IIO
+    chown system system /dev/invensense
+    chown system system /sys/bus/iio/devices/invensense/buffer/enable
+    chown system system /sys/bus/iio/devices/invensense/buffer/length
+    chown system system /sys/bus/iio/devices/invensense/control
+    chmod 0660 /dev/invensense
+    chmod 0664 /sys/bus/iio/devices/invensense/buffer/enable
+    chmod 0664 /sys/bus/iio/devices/invensense/buffer/length
+    chmod 0664 /sys/bus/iio/devices/invensense/control
+
+# Permissions for TouchScreen
+    chown system radio /sys/class/sec/tsp/cmd
+    chown system system /sys/class/sec/tsp/input/enabled
+
+    chmod 0660 /sys/class/sec/tsp/input/enabled
+
+# Permissions for Touchkey
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update
+    chown system system /sys/class/sec/sec_touchkey/input/enabled
+
+    chmod 0660 /sys/class/sec_touchkey/input/enabled
+
+# Permission for Vibrator
+    chown system system /sys/class/timed_output/vibrator/enable
+
+# Permission for Wifi firmware_path
+    chown wifi wifi /sys/module/dhd/parameters/firmware_path
+
+# SSWAP
+    write /proc/sys/vm/swappiness 130
+
+service sswap /sbin/sswap -s -f 1536
+    class core
+    user root
+    group root
+    oneshot
+
+# Permissions for System LSI NFC
+# NFC : Permissions for NFC
+    chmod 0660 /dev/sec-nfc
+    chown nfc nfc /dev/sec-nfc
+
+# NFC : EFS section for NFC Resonant Frequency
+    mkdir /efs/sec_efs/nfc 0700 nfc nfc

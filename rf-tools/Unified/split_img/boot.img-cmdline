@@ -1,1 +1,1 @@
-buildvariant=userdebug
+androidboot.selinux=permissive buildvariant=userdebug

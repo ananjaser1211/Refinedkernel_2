@@ -1,5 +1,37 @@
 subsystem adf
-	devname uevent_devname
+    devname uevent_devname
+
+subsystem graphics
+    devname uevent_devpath
+    dirname /dev/graphics
+
+subsystem drm
+    devname uevent_devpath
+    dirname /dev/dri
+
+subsystem oncrpc
+    devname uevent_devpath
+    dirname /dev/oncrpc
+
+subsystem adsp
+    devname uevent_devpath
+    dirname /dev/adsp
+
+subsystem msm_camera
+    devname uevent_devpath
+    dirname /dev/msm_camera
+
+subsystem input
+    devname uevent_devpath
+    dirname /dev/input
+
+subsystem mtd
+    devname uevent_devpath
+    dirname /dev/mtd
+
+subsystem sound
+    devname uevent_devpath
+    dirname /dev/snd
 
 # ueventd can only set permissions on device nodes and their associated
 # sysfs attributes, not on arbitrary paths.
@@ -19,12 +51,9 @@ subsystem adf
 /dev/hw_random            0440   root       system
 /dev/ashmem               0666   root       root
 /dev/binder               0666   root       root
-/dev/hidraw1              0664   root       system
-/dev/ovr*                 0664   root       system
+/dev/hwbinder             0666   root       root
+/dev/vndbinder            0666   root       root
 
-# Anyone can read the logs, but if they're not in the "logs"
-# group, then they'll only see log entries for their UID.
-/dev/log/*                0666   root       log
 /dev/pmsg0                0222   root       log
 
 # the msm hw3d client device node is world writable/readable.
@@ -39,11 +68,9 @@ subsystem adf
 # these should not be world writable
 /dev/diag                 0660   radio      radio
 /dev/diag_arm9            0660   radio      radio
-/dev/android_adb          0660   adb        adb
-/dev/android_adb_enable   0660   adb        adb
 /dev/ttyMSM0              0600   bluetooth  bluetooth
-/dev/uhid                 0660   system     net_bt_stack
-/dev/uinput               0660   system     net_bt_stack
+/dev/uhid                 0660   uhid       uhid
+/dev/uinput               0660   system     bluetooth
 /dev/alarm                0664   system     radio
 /dev/rtc0                 0640   system     system
 /dev/tty0                 0660   root       system
@@ -107,29 +134,3 @@ subsystem adf
 
 # DVB API device nodes
 /dev/dvb*                 0660   root       system
-
-# MobiCore
-/dev/mobicore             0700   system     system
-/dev/mobicore-user        0666   radio     system
-
-# Secure MEM driver
-/dev/s5p-smem             0660   system     system
-
-# sensorhub
-/dev/ssp_sensorhub        0660   system     system
-/dev/ssp_data_injection   0660   system     system
-
-# Fingerprint Sensor
-/dev/vfsspi        0660   system     system
-/dev/esfp0        0660   system     system
-
-# sensor sysfs properties
-/sys/devices/virtual/input/input*	poll_delay	0660	system	radio
-/sys/devices/virtual/input/input*	enable		0660	system	radio
-
-# Sensorhub IIO
-/dev/ssp_sensorhub        0660   system		system
-/dev/iio:device*          0660   system		system
-/sys/devices/platform/13980000.spi/spi_master/spi4/spi4.0/iio:device*    buffer/enable       0660    system    system
-/sys/devices/platform/13980000.spi/spi_master/spi4/spi4.0/iio:device*    buffer/length       0660    system    system
-/sys/bus/iio/devices/iio:device*    0664   system     radio
