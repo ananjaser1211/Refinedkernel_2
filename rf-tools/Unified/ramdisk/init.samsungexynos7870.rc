@@ -656,13 +656,10 @@ on fs
     chown system system /sys/class/lcd/panel/temperature
     chown system radio /sys/class/lcd/panel/power_reduce
     chown system system /sys/class/lcd/panel/lux
-    chown system system /sys/class/lcd/panel/adaptive_control
+    chown system media_rw /sys/class/lcd/panel/adaptive_control
     chown system system /sys/class/lcd/panel/dpui
     chown system system /sys/class/lcd/panel/dpui_dbg
     chown system system /sys/devices/svc/OCTA/SVC_OCTA
-
-# Permissions for ALPM
-    chown system system /sys/class/lcd/panel/alpm
 
 # Permissions for input_booster
     chown system radio /sys/class/input_booster/level
