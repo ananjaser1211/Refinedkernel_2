@@ -97,6 +97,8 @@ endif
 	# DHD_LB_RXP - Perform RX Packet processing in parallel
 	# DHD_LB_STATS - To display the Load Blancing statistics
 	DHDCFLAGS += -DDHD_LB -DDHD_LB_RXP -DDHD_LB_TXP -DDHD_LB_STATS
+	# Enable wakelock for legacy scan
+	DHDCFLAGS += -DDHD_USE_SCAN_WAKELOCK
 	# Extended HANG event with reason codes
 	DHDCFLAGS += -DDHD_USE_EXTENDED_HANG_REASON
 	DHDCFLAGS += -DDHD_RECOVER_TIMEOUT
@@ -127,8 +129,6 @@ endif
 # Debug
 DHDCFLAGS += -DSIMPLE_MAC_PRINT
 DHDCFLAGS += -DDEBUGFS_CFG80211
-# Enable wakelock for legacy scan
-DHDCFLAGS += -DDHD_USE_SCAN_WAKELOCK
 # Enable wakelock debug function
 DHDCFLAGS += -DDHD_TRACE_WAKE_LOCK
 # Print out kernel panic point of file and line info when assertion happened
@@ -285,12 +285,12 @@ DHDCFLAGS += -DDHD_BLOB_EXISTENCE_CHECK
 # Random mac scan
 DHDCFLAGS += -DSUPPORT_RANDOM_MAC_SCAN
 
+# Force the use of Android Nougat+ File path
 ANDROID_PLATFORM_VERSION = 7
-# If Android version lower than 7(Nougat) => Use Legacy File path
 ifeq ($(shell expr $(ANDROID_PLATFORM_VERSION) \< 7),1)
 DHDCFLAGS += -DDHD_LEGACY_FILE_PATH
 $(warning Will be use Legacy file path)
-endif           
+endif
 
 ##############################
 # Android Platform Definition
