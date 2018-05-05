@@ -160,7 +160,7 @@ struct vfsspi_device_data {
 	unsigned int ldo_pin; /* Ldo 3.3V GPIO pin number */
 	unsigned int ldo_pin2; /* Ldo 1.8V GPIO pin number */
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 	/* set cs pin in fp driver, use only Exynos8890 */
 	/* for use auto cs mode with dualization fp sensor */
 	unsigned int cs_gpio;
@@ -536,28 +536,51 @@ static int vfsspi_sec_spi_prepare(struct sec_spi_info *spi_info,
 	struct spi_device *spi)
 {
 	struct clk *fp_spi_pclk, *fp_spi_sclk;
-
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	struct clk *fp_spi_dma;
+	int ret = 0;
+#endif
 	fp_spi_pclk = clk_get(NULL, "fp-spi-pclk");
-
 	if (IS_ERR(fp_spi_pclk)) {
 		pr_err("Can't get fp_spi_pclk\n");
 		return -1;
 	}
 
 	fp_spi_sclk = clk_get(NULL, "fp-spi-sclk");
-
 	if (IS_ERR(fp_spi_sclk)) {
+		clk_put(fp_spi_pclk);
 		pr_err("Can't get fp_spi_sclk\n");
 		return -1;
 	}
 
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	fp_spi_dma = clk_get(NULL, "apb_pclk");
+	if (IS_ERR(fp_spi_dma)) {
+		clk_put(fp_spi_pclk);
+		clk_put(fp_spi_sclk);
+		pr_err("%s Can't get apb_pclk\n", __func__);
+		return PTR_ERR(fp_spi_dma);
+	}
+#endif
 	clk_prepare_enable(fp_spi_pclk);
 	clk_prepare_enable(fp_spi_sclk);
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	ret = clk_prepare_enable(fp_spi_dma);
+	if (ret) {
+		pr_err("%s clk_finger clk_prepare_enable failed %d\n", __func__, ret);
+		clk_put(fp_spi_pclk);
+		clk_put(fp_spi_sclk);
+		clk_put(fp_spi_dma);
+		return ret;
+	}
+#endif
 	clk_set_rate(fp_spi_sclk, spi_info->speed * 2);
 
 	clk_put(fp_spi_pclk);
 	clk_put(fp_spi_sclk);
-
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	clk_put(fp_spi_dma);
+#endif
 	return 0;
 }
 
@@ -565,7 +588,9 @@ static int vfsspi_sec_spi_unprepare(struct sec_spi_info *spi_info,
 	struct spi_device *spi)
 {
 	struct clk *fp_spi_pclk, *fp_spi_sclk;
-
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	struct clk *fp_spi_dma;
+#endif
 	fp_spi_pclk = clk_get(NULL, "fp-spi-pclk");
 	if (IS_ERR(fp_spi_pclk)) {
 		pr_err("Can't get fp_spi_pclk\n");
@@ -575,15 +600,29 @@ static int vfsspi_sec_spi_unprepare(struct sec_spi_info *spi_info,
 	fp_spi_sclk = clk_get(NULL, "fp-spi-sclk");
 
 	if (IS_ERR(fp_spi_sclk)) {
+		clk_put(fp_spi_pclk);
 		pr_err("Can't get fp_spi_sclk\n");
 		return -1;
 	}
-
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	fp_spi_dma = clk_get(NULL, "apb_pclk");
+	if (IS_ERR(fp_spi_dma)) {
+		clk_put(fp_spi_pclk);
+		clk_put(fp_spi_sclk);
+		pr_err("%s Can't get apb_pclk\n", __func__);
+		return PTR_ERR(fp_spi_dma);
+	}
+#endif
 	clk_disable_unprepare(fp_spi_pclk);
 	clk_disable_unprepare(fp_spi_sclk);
-
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	clk_disable_unprepare(fp_spi_dma);
+#endif
 	clk_put(fp_spi_pclk);
 	clk_put(fp_spi_sclk);
+#if defined(CONFIG_SOC_EXYNOS7870) || defined(CONFIG_SOC_EXYNOS7880)
+	clk_put(fp_spi_dma);
+#endif
 
 	return 0;
 }
@@ -1366,7 +1405,7 @@ static void vfsspi_platformUninit(struct vfsspi_device_data *vfsspi_device)
 			gpio_free(vfsspi_device->ocp_en);
 
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 		if (vfsspi_device->cs_gpio)
 			gpio_free(vfsspi_device->cs_gpio);
 #endif
@@ -1387,7 +1426,7 @@ static int vfsspi_parse_dt(struct device *dev,
 	int gpio;
 
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 	gpio = of_get_named_gpio(np, "vfsspi-csgpio", 0);
 	if (gpio < 0) {
 		errorno = gpio;
@@ -1842,7 +1881,7 @@ static int vfsspi_wakeup_daemon(struct vfsspi_device_data *vfsspi_device)
 #endif
 
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 static int vfsspi_set_cs_gpio(struct vfsspi_device_data *vfsspi_device, struct s3c64xx_spi_csinfo *cs)
 {
 	int status = -1;
@@ -1877,7 +1916,7 @@ static int vfsspi_probe(struct spi_device *spi)
 	int status = 0;
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
 	int retry = 0;
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 	struct s3c64xx_spi_csinfo *cs;
 #endif
 #endif
@@ -1940,7 +1979,7 @@ static int vfsspi_probe(struct spi_device *spi)
 	spi->mode = SPI_MODE_0;
 
 #ifndef ENABLE_SENSORS_FPRINT_SECURE
-#ifdef CONFIG_SOC_EXYNOS8890
+#if defined(CONFIG_SOC_EXYNOS8890)
 	/* set cs pin in fp driver, use only Exynos8890 */
 	/* for use auto cs mode with dualization fp sensor */
 	cs = spi->controller_data;
