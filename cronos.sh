@@ -127,6 +127,7 @@ PACK_BOOT_IMG()
 	mv $CR_KERNEL $CR_AIK/split_img/boot.img-zImage
 	mv $CR_DTB $CR_AIK/split_img/boot.img-dtb
 	$CR_AIK/repackimg.sh
+	echo -n "SEANDROIDENFORCE" » $CR_AIK/image-new.img
 	mv $CR_AIK/image-new.img $CR_OUT/$CR_NAME-$CR_VERSION-$CR_DATE-$CR_VARIANT.img
 	$CR_AIK/cleanup.sh
 }
