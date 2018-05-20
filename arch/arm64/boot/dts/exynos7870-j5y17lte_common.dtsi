@@ -1468,7 +1468,7 @@
 		status = "okay";
 	};
 
-	decon_fb@14830000 {
+	decon_f@14830000 {
 		psr_mode = <0>;		/* 0: video mode, 1: DP command mode, 2: MIPI command mode */
 		trig_mode = <1>;	/* 0: hw trigger, 1: sw trigger */
 		disp-pll-clk = <73000000>;

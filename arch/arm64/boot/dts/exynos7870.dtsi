@@ -235,7 +235,7 @@
 			  "10500000.mailbox-cp",	/* idle ip index : 27 */
 			  "10570000.mailbox-gnss",	/* idle ip index : 28 */
 
-			  "14830000.decon_fb",		/* idle ip index : 29 */
+			  "14830000.decon_f",		/* idle ip index : 29 */
 			  "pd-g3d",			/* idle ip index : 30 */
 			  "pd-cam0",			/* idle ip index : 31 */
 			  "pd-mfcmscl",			/* idle ip index : 32 */
@@ -1583,7 +1583,7 @@
 		data_lane_cnt = <4>;
 	};
 
-	decon_0: decon_fb@14830000 {
+	decon_0: decon_f@14830000 {
 		compatible = "samsung,exynos5-decon_driver";
 		#address-cells = <2>;
 		#size-cells = <1>;
