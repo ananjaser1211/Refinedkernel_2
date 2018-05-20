@@ -50,7 +50,9 @@ on post-fs-data
     # create knox filesystem structure
     mkdir /data/knox 0771 system system
     mkdir /data/knox/data 0771 system system
-    mkdir /data/knox/sdcard 0771 system system
+    mkdir /data/knox/sdcard 0770 system system
+    chmod 0770 /data/knox/sdcard
+    chown system system /data/knox/sdcard
     mkdir /data/knox/ext_sdcard 0771 system system
     mkdir /data/knox/app 0771 system system
     mkdir /data/knox/tmp 0771 system system

@@ -1,5 +1,7 @@
+
+
 on boot
-# IMS stack for IMS
+# IMS Stack
 service imsd /system/bin/imsd
     class main
     socket imsd stream 0660 system system

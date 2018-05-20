@@ -50,8 +50,8 @@
 # mscalers
 /dev/video50              0660   media      graphics
 /dev/video51              0660   media      graphics
-/dev/m2m1shot_scaler0     0660   cameraserver      cameraserver
-/dev/m2m1shot_scaler1     0660   cameraserver      m2mscaler
+/dev/m2m1shot_scaler0     0660   cameraserver m2mscaler
+/dev/m2m1shot_scaler1     0660   cameraserver m2mscaler
 
 /dev/video55              0666   system     graphics
 /dev/fimg2d               0666   system     graphics
@@ -59,10 +59,10 @@
 /dev/HPD                  0660   system     system
 
 # mfc
-/dev/video6               0660   mediacodec      mediadrm
-/dev/video7               0660   media      mediadrm
-/dev/video8               0660   media      mediadrm
-/dev/video9               0660   media      mediadrm
+/dev/video6               0660   mediacodec mediadrm
+/dev/video7               0660   mediacodec mediadrm
+/dev/video8               0660   mediacodec mediadrm
+/dev/video9               0660   mediacodec mediadrm
 
 # camera
 /dev/video100             0660   cameraserver      cameraserver
@@ -90,8 +90,8 @@
 /dev/media2               0660   media      media
 
 # hevc
-/dev/video10              0660   media      media
-/dev/video11              0660   media      media
+/dev/video10              0660   mediacodec mediadrm
+/dev/video11              0660   mediacodec mediadrm
 
 # jpeg
 /dev/video12              0660   media      media
@@ -114,46 +114,23 @@
 /dev/umts_router          0660   radio      radio
 
 # SIPC RIL
-/dev/umts_boot0           0660   radio      radio
-/dev/umts_ipc0            0660   radio      radio
-/dev/umts_ipc1            0660   radio      radio
-/dev/umts_rfs0            0660   radio      radio
-
-# Modem Interface
-/dev/block/platform/13540000.dwmmc0/by-name/RADIO	0660	system	radio
-/dev/block/platform/13540000.dwmmc0/by-name/CP_DEBUG	0660	radio	system
-/dev/umts*		  0660	system	radio
-/dev/umts_csd		  0660	system	loop_radio
-/dev/smd4                 0660  system  radio
-
-# interactive governor parameters
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/timer_rate                  0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/timer_slack                 0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/min_sample_time             0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/hispeed_freq                0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/target_loads                0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/go_hispeed_load             0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/above_hispeed_delay         0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boost                       0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boostpulse                  0200    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/input_boost                 0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/boostpulse_duration         0660    system  system
-/sys/devices/system/cpu/cpu*   cpufreq/interactive/io_is_busy                  0660    system  system
-# Vision (VPU, SCORE)
-/dev/vertex0             0660   media      media
-/dev/vertex1             0660   media      media
+/dev/umts_boot0         0660    radio       radio
+/dev/umts_ipc0          0660    radio       radio
+/dev/umts_rfs0          0660    radio       radio
 
 # sensor sysfs properties
 /sys/devices/virtual/input/input*	poll_delay	0660	system	radio
 /sys/devices/virtual/input/input*	enable		0660	system	radio
 
-# Sensorhub IIO
-/dev/ssp_sensorhub        0660   system		system
-/dev/iio:device*          0660   system		system
-/sys/devices/13930000.spi/spi_master/spi2/spi2.0/iio:device*    buffer/enable       0660    system    system
-/sys/devices/13930000.spi/spi_master/spi2/spi2.0/iio:device*    buffer/length       0660    system    system
-/sys/bus/iio/devices/iio:device*    0664   system     radio
+# Modem Interface
+/dev/block/platform/13540000.dwmmc0/by-name/RADIO	0660   system     radio
+/dev/block/platform/13540000.dwmmc0/by-name/CP_DEBUG	0660   radio      system
+/dev/umts*                0660   system     radio
+/dev/umts_csd             0660   system     loop_radio
+/dev/smd4                 0660   system     radio
 
 # Google FRP solution
 /dev/block/platform/13540000.dwmmc0/by-name/PERSISTENT    0660    system    system
+
+# Reactivation Lock solution
 /dev/block/platform/13540000.dwmmc0/by-name/STEADY    0660    system    system

@@ -176,15 +176,6 @@ on init
     write /dev/cpuctl/cpu.rt_period_us 1000000
     write /dev/cpuctl/cpu.rt_runtime_us 950000
 
-    mkdir /dev/cpuctl/bg_non_interactive
-    chown system system /dev/cpuctl/bg_non_interactive/tasks
-    chmod 0666 /dev/cpuctl/bg_non_interactive/tasks
-    # 5.0 %
-    write /dev/cpuctl/bg_non_interactive/cpu.shares 52
-    write /dev/cpuctl/bg_non_interactive/cpu.rt_period_us 1000000
-    # active FIFO threads will never be in BG
-    write /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us 10000
-
     mkdir /dev/cpuctl/bg_cached
     chown system system /dev/cpuctl/bg_cached/tasks
     chown system system /dev/cpuctl/bg_cached/cpu.cfs_period_us
@@ -192,8 +183,6 @@ on init
     chmod 0666 /dev/cpuctl/bg_cached/tasks
     chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_period_us
     chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_quota_us
-    # 5.0 %
-    write /dev/cpuctl/bg_cached/cpu.shares 52
     write /dev/cpuctl/bg_cached/cpu.rt_runtime_us 10000
     write /dev/cpuctl/bg_cached/cpu.rt_period_us 1000000
     write /dev/cpuctl/bg_cached/cpu.cfs_period_us 20000
@@ -206,8 +195,6 @@ on init
     chmod 0666 /dev/cpuctl/bg_abnormal/tasks
     chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
     chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
-    # 5.0 %
-    write /dev/cpuctl/bg_abnormal/cpu.shares 52
     write /dev/cpuctl/bg_abnormal/cpu.rt_runtime_us 10000
     write /dev/cpuctl/bg_abnormal/cpu.rt_period_us 1000000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
@@ -336,11 +323,6 @@ on init
     # expecting it to point to /proc/self/fd
     symlink /proc/self/fd /dev/fd
 
-    export DOWNLOAD_CACHE /data/cache
-
-    # set RLIMIT_NICE to allow priorities from 19 to -20
-    setrlimit 13 40 40
-
     # reset_reason
     chown system system /proc/reset_reason
     chmod 0600 /proc/reset_reason
@@ -404,11 +386,6 @@ on firmware_mounts_complete
 # Mount filesystems and start core system services.
 on late-init
     trigger early-fs
-
-    # Mount fstab in init.{$device}.rc by mount_all command. Optional parameter
-    # '--early' can be specified to skip entries with 'latemount'.
-    # /system and /vendor must be mounted by the end of the fs stage,
-    # while /data is optional.
     trigger fs
     trigger post-fs
 
@@ -417,18 +394,9 @@ on late-init
     # issued fs triggers have completed.
     trigger load_system_props_action
 
-    # Mount fstab in init.{$device}.rc by mount_all with '--late' parameter
-    # to only mount entries with 'latemount'. This is needed if '--early' is
-    # specified in the previous mount_all command on the fs stage.
-    # With /system mounted and properties form /system + /factory available,
-    # some services can be started.
-    trigger late-fs
-
     # Now we can mount /data. File encryption requires keymaster to decrypt
-    # /data, which in turn can only be loaded when system properties are present.
+    # /data, which in turn can only be loaded when system properties are present
     trigger post-fs-data
-
-    # Load persist properties and override properties (if enabled) from /data.
     trigger load_persist_props_action
 
     # Remove a file to wake up anything waiting for firmware.
@@ -668,10 +636,6 @@ on post-fs-data
     # create the A/B OTA directory, so as to enforce our permissions
     mkdir /data/ota 0771 root root
 
-    # create the OTA package directory. It will be accessed by GmsCore (cache
-    # group), update_engine and update_verifier.
-    mkdir /data/ota_package 0770 system cache
-
     # create resource-cache and double-check the perms
     mkdir /data/resource-cache 0771 system system
     chown system system /data/resource-cache
@@ -763,11 +727,6 @@ on post-fs-data
 
     mkdir /data/media 0770 media_rw media_rw
     mkdir /data/media/obb 0770 media_rw media_rw
-
-    mkdir /data/cache 0770 system cache
-    mkdir /data/cache/recovery 0770 system cache
-    mkdir /data/cache/backup_stage 0700 system system
-    mkdir /data/cache/backup 0700 system system
 
     init_user0
 
@@ -900,6 +859,8 @@ on boot
     chmod 0660 /sys/class/sec_touchkey/input/enabled
     chown system system /sys/class/sec/sec_touchkey/input/enabled
     chown system radio /sys/class/sec/sec_touchkey/brightness
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_light_update
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_light_table_write
 
 # Permissions for Auto Input
     chown system system /sys/class/sec/sec_auto_input/enable
@@ -971,13 +932,19 @@ on boot
     chown radio system /sys/devices/system/cpu/kernel_max
     chmod 0664 /sys/devices/system/cpu/kernel_max
 
-   # Permissions for SSRM
-    chmod 0664 /sys/class/sec/sec-thermistor/temperature
-    chmod 0664 /sys/class/power_supply/battery/siop_level
-    #chmod 0664 /sys/class/power_supply/battery/test_charge_current
-    chown radio system /sys/class/sec/sec-thermistor/temperature
-    chown radio system /sys/class/power_supply/battery/siop_level
-    chown system radio /sys/class/power_supply/battery/siop_event
+    # Change permission for input booster
+    chown system radio /sys/class/input_booster/level
+    chown system radio /sys/class/input_booster/head
+    chown system radio /sys/class/input_booster/tail
+    chown system radio /sys/class/input_booster/touchkey/level
+    chown system radio /sys/class/input_booster/touchkey/freq
+    chown system radio /sys/class/input_booster/touchkey/time
+    chmod 0664 /sys/class/input_booster/level
+    chmod 0664 /sys/class/input_booster/head
+    chmod 0664 /sys/class/input_booster/tail
+    chmod 0664 /sys/class/input_booster/touchkey/level
+    chmod 0664 /sys/class/input_booster/touchkey/freq
+    chmod 0664 /sys/class/input_booster/touchkey/time
 
  # permission for CHARGING
    mkdir /efs/Battery 0775 radio system
@@ -1008,6 +975,7 @@ on boot
    chown system radio /sys/class/power_supply/battery/factory_mode_relieve
    chown system radio /sys/class/power_supply/battery/factory_mode_bypass
    chown system radio /sys/class/power_supply/battery/normal_mode_bypass
+   chown system radio /sys/class/power_supply/battery/factory_voltage_regulation
    chown media sdcard_rw /sys/class/power_supply/battery/store_mode
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
@@ -1125,15 +1093,14 @@ on boot
    chmod 0660 /sys/class/power_supply/battery/cisd_data
    chown system radio /sys/class/power_supply/battery/cisd_data_json
    chmod 0660 /sys/class/power_supply/battery/cisd_data_json
+   chown system system /efs/FactoryApp/cisd_fullcaprep_max
+   chmod 0640 /efs/FactoryApp/cisd_fullcaprep_max
    chown system radio /sys/class/power_supply/battery/cisd_data_efs_path
    chmod 0660 /sys/class/power_supply/battery/cisd_data_efs_path
    chown system system /efs/FactoryApp/cisd_data
    chmod 0640 /efs/FactoryApp/cisd_data
-   chown system radio /efs/Battery/fg_full_voltage
-   chown system radio /sys/class/power_supply/battery/fg_full_voltage
-   chmod 0664 /efs/Battery/fg_full_voltage
-   chmod 0664 /sys/class/power_supply/battery/fg_full_voltage
-
+   chown radio system /efs/Battery/batt_capacity_max
+   chmod 0664 /efs/Battery/batt_capacity_max
     # OTG Test
     chown system radio /sys/class/host_notify/usb_otg/booster
     chmod 0664 /sys/class/host_notify/usb_otg/booster
@@ -1159,10 +1126,6 @@ on boot
     chmod 0664 /sys/class/usb_notify/usb_control/usb_hw_param
     chown system usb /sys/class/usb_notify/usb_control/hw_param
     chmod 0664 /sys/class/usb_notify/usb_control/hw_param
-
-    # usb whitelist
-    chown system usb /sys/class/usb_notify/usb_control/whitelist_for_mdm
-    chmod 0664 /sys/class/usb_notify/usb_control/whitelist_for_mdm
 
     # Assume SMP uses shared cpufreq policy for all CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
@@ -1297,9 +1260,6 @@ on boot
 # HMT relay mode
     chown radio system /sys/devices/virtual/relay_on
 
-# Daydream
-    setprop sys.daydream.connected 0
-    
 # KNOX_NAP
     chmod 0660 /dev/ncm_dev
     chown system system /dev/ncm_dev
@@ -1342,7 +1302,7 @@ on nonencrypted
     # mobicore
     mkdir /data/misc/mcRegistry 0775 system system
     # A/B update verifier that marks a successful boot.
-    exec - root cache -- /system/bin/update_verifier nonencrypted
+    exec - root -- /system/bin/update_verifier nonencrypted
     class_start main
     class_start late_start
 
@@ -1362,6 +1322,8 @@ on charger
     chmod 0660 /sys/class/power_supply/battery/cisd_fullcaprep_max
     chown system radio /sys/class/power_supply/battery/cisd_data
     chmod 0660 /sys/class/power_supply/battery/cisd_data
+    chown system system /efs/FactoryApp/cisd_fullcaprep_max
+    chmod 0640 /efs/FactoryApp/cisd_fullcaprep_max
     chown system radio /sys/class/power_supply/battery/cisd_data_efs_path
     chmod 0660 /sys/class/power_supply/battery/cisd_data_efs_path
     chown system system /efs/FactoryApp/cisd_data
@@ -1371,6 +1333,8 @@ on charger
     mkdir /efs/Battery 0775 radio system
     chown radio system /efs/Battery
     chmod 0775 /efs/Battery
+    chown radio system /efs/Battery/batt_capacity_max
+    chmod 0664 /efs/Battery/batt_capacity_max
     copy /system/vendor/firmware/battery_data.dat /efs/Battery/battery_data.dat
     chmod 0400 /efs/Battery/battery_data.dat
     write /sys/class/power_supply/battery/batt_update_data "/efs/Battery/battery_data.dat"
@@ -1383,7 +1347,6 @@ on property:vold.decrypt=trigger_reset_main
 on property:vold.decrypt=trigger_load_persist_props
     load_persist_props
     start sysmon
-    start scs
     start logd
     start logd-reinit
 
@@ -1392,7 +1355,7 @@ on property:vold.decrypt=trigger_post_fs_data
 
 on property:vold.decrypt=trigger_restart_min_framework
     # A/B update verifier that marks a successful boot.
-    exec - root cache -- /system/bin/update_verifier trigger_restart_min_framework
+    exec - root -- /system/bin/update_verifier trigger_restart_min_framework
     class_start main
 
 on property:vold.decrypt=trigger_restart_framework
@@ -1402,7 +1365,7 @@ on property:vold.decrypt=trigger_restart_framework
     # mobicore
     mkdir /data/misc/mcRegistry 0775 system system
     # A/B update verifier that marks a successful boot.
-    exec - root cache -- /system/bin/update_verifier trigger_restart_framework
+    exec - root -- /system/bin/update_verifier trigger_restart_framework
     class_start main
     class_start late_start
 
@@ -1492,13 +1455,7 @@ service SIDESYNC_service /system/bin/ss_conn_daemon
 service edmaudit /system/bin/edmaudit
     class main
     user root
-    disabled
 
-on property:security.edmaudit=true
-    start edmaudit
-
-on property:security.edmaudit=false
-    stop edmaudit
 ## WTL_EDM_END
 
 service kap_enable /sbin/knox_changer -e
